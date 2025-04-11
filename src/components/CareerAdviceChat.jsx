@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SendHorizonal, Moon, Sun } from 'lucide-react';
+import { SendHorizonal, Moon, Sun, MessageSquareText } from 'lucide-react';
 import { Button } from './ui/button';
 import botAvatar from '../assets/bot.png';
 import userAvatar from '../assets/user.png';
@@ -21,7 +21,6 @@ const CareerAdviceChat = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -36,13 +35,13 @@ const CareerAdviceChat = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    
+
     const query =
-    "You're a friendly, helpful chatbot assistant in a job portal application. Please give your responses in a conversational, step-by-step way. Only ask 1 or 2 questions at a time. Keep each message concise (3-5 lines max). Use simple formatting and bullet points if needed. Avoid long paragraphs. Now answer: " +
-    input;
-    
-    setInput('')
+      "You're a friendly, helpful chatbot assistant in a job portal application. Please give your responses in a conversational, step-by-step way. Only ask 1 or 2 questions at a time. Keep each message concise (3-5 lines max). Use simple formatting and bullet points if needed. Avoid long paragraphs. Now answer: " +
+      input;
+
     const newMessages = [...messages, { sender: 'user', text: input }];
+    setInput('');
     setMessages(newMessages);
     setIsLoading(true);
 
@@ -65,7 +64,6 @@ const CareerAdviceChat = () => {
       setMessages([...newMessages, { sender: 'bot', text: '⚠️ Oops, try again later.' }]);
     }
 
-    setInput('');
     setIsLoading(false);
   };
 
@@ -76,9 +74,9 @@ const CareerAdviceChat = () => {
   return (
     <div className={`h-screen w-full ${themeClasses} transition-all duration-500 flex flex-col overflow-hidden`}>
       <Navbar />
-      <div className="flex-1 flex justify-center items-start py-4 overflow-hidden">
+      <div className="flex-1 flex justify-center items-start py-4 px-2 sm:px-4 md:px-6 overflow-hidden">
         <div
-          className={`w-full max-w-3xl h-full flex flex-col rounded-3xl p-6 shadow-xl border transition-all duration-500 ${
+          className={`w-full h-full max-w-3xl flex flex-col rounded-3xl p-4 sm:p-6 shadow-xl border transition-all duration-500 ${
             darkMode
               ? 'bg-[#1e1e1e] border-gray-700'
               : 'bg-white/40 backdrop-blur-md border-white/20'
@@ -86,10 +84,16 @@ const CareerAdviceChat = () => {
         >
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold text-[#6A38C2]">💡 Ask Career Advice</h2>
+            <div className="flex items-center gap-2">
+              {/* Icon only on mobile */}
+              <div className="block sm:hidden">
+                <MessageSquareText className="w-5 h-5 text-[#6A38C2]" />
+              </div>
+              <h2 className="text-lg sm:text-2xl font-semibold text-[#6A38C2]">Ask Career Advice</h2>
+            </div>
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-transform hover:scale-110"
               title="Toggle theme"
             >
               {darkMode ? (
@@ -101,17 +105,15 @@ const CareerAdviceChat = () => {
           </div>
 
           {/* Chat Window */}
-          <div
-            className={`flex-1 overflow-y-auto flex flex-col gap-4 pr-2 mb-4 rounded-xl ${
-              darkMode ? 'scrollbar-dark' : 'scrollbar-light'
-            }`}
-          >
+          <div className={`flex-1 overflow-y-auto flex flex-col gap-4 pr-2 mb-4 rounded-xl ${
+            darkMode ? 'scrollbar-dark' : 'scrollbar-light'
+          }`}>
             {messages.map((msg, index) => (
               <div
                 key={index}
                 className={`flex items-start gap-2 ${
                   msg.sender === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                } group`}
               >
                 {msg.sender === 'bot' && (
                   <img
@@ -121,7 +123,7 @@ const CareerAdviceChat = () => {
                   />
                 )}
                 <div
-                  className={`max-w-[75%] px-4 py-3 rounded-xl text-sm shadow-md ${
+                  className={`max-w-[75%] px-4 py-3 rounded-xl text-sm shadow-md transition-transform group-hover:scale-[1.02] ${
                     msg.sender === 'user'
                       ? 'bg-[#6A38C2] text-white rounded-br-none'
                       : darkMode
@@ -133,7 +135,7 @@ const CareerAdviceChat = () => {
                 </div>
                 {msg.sender === 'user' && (
                   <img
-                    src={user.profile.profilePhoto || userAvatar}
+                    src={user?.profile?.profilePhoto || userAvatar}
                     alt="user"
                     className="h-8 w-8 rounded-full shadow-sm"
                   />
@@ -164,7 +166,7 @@ const CareerAdviceChat = () => {
             />
             <Button
               onClick={handleSend}
-              className="rounded-full bg-[#6A38C2] hover:bg-[#5128a1] transition-colors"
+              className="rounded-full bg-[#6A38C2] hover:bg-[#5128a1] transition-all hover:scale-105"
             >
               <SendHorizonal className="h-4 w-4 text-white" />
             </Button>

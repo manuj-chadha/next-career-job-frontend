@@ -162,12 +162,17 @@ const Navbar = () => {
                         <ul className="flex flex-col gap-4 font-medium mt-2">
                             {user && user.role.toLowerCase() === 'recruiter' ? (
                                 <>
-                                    <li className={navItemClasses}>
+                                    <li className={navItemMobileClasses}>
+                                        <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-2'>
+                                            <Home size={18} /> Home
+                                        </Link>
+                                    </li>
+                                    <li className={navItemMobileClasses}>
                                         <Link to="/admin/companies" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-2'>
                                             <Building2 size={18} /> Companies
                                         </Link>
                                     </li>
-                                    <li className={navItemClasses}>
+                                    <li className={navItemMobileClasses}>
                                         <Link to="/admin/jobs" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-2'>
                                             <Briefcase size={18} /> Jobs
                                         </Link>

@@ -17,7 +17,7 @@ const Job = ({job}) => {
     }
     
     return (
-        <div className='p-5 py-3 rounded-md shadow-xl bg-white border border-gray-100'>
+        <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100'>
             <div className='flex items-center justify-between'>
                 <p className='text-xs text-gray-500'>{daysAgoFunction(job?.createdAt) === 0 ? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`}</p>
                 <Button variant="outline" className="rounded-full" size="icon"><Bookmark /></Button>
@@ -30,14 +30,14 @@ const Job = ({job}) => {
                     </Avatar>
                 </Button>
                 <div>
-                    <h1 className='font-medium text-sm'>{job?.company?.name}</h1>
-                    <p className='text-xs text-gray-500'>India</p>
+                    <h1 className='font-medium text-md'>{job?.company?.name}</h1>
+                    <p className='text-sm text-gray-500'>India</p>
                 </div>
             </div>
 
             <div>
-                <h1 className='font-bold text-md my-2'>{job?.title}</h1>
-                <p className='text-xs text-gray-600'>{job?.description}</p>
+                <h1 className='font-bold text-lg my-2'>{job?.title}</h1>
+                <p className='text-sm text-gray-600'>{job?.description}</p>
             </div>
             <div className='flex items-center gap-2 mt-4'>
                 <Badge className={'text-blue-700 font-bold text-xs'} variant="ghost">{job?.position} Positions</Badge>
@@ -45,8 +45,8 @@ const Job = ({job}) => {
                 <Badge className={'text-[#7209b7] font-bold text-xs'} variant="ghost">{job?.salary}LPA</Badge>
             </div>
             <div className='flex items-center gap-4 mt-4'>
-                <Button className='cursor-pointer text-xs' onClick={()=> navigate(`/description/${job?.id}`)} variant="outline">Details</Button>
-                <Button className="bg-[#7209b7] cursor-pointer text-xs">Save For Later</Button>
+                <Button className='cursor-pointer text-sm' onClick={()=> navigate(`/description/${job?.id}`)} variant="outline">Details</Button>
+                <Button className="bg-[#7209b7] cursor-pointer text-sm">Save For Later</Button>
             </div>
         </div>
     )

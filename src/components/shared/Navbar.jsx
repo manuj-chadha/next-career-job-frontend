@@ -36,12 +36,12 @@ const Navbar = () => {
     return (
         <div className="bg-white z-50 relative overflow-x-hidden">
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16 px-4'>
-                <h1 className='text-xl font-bold'>
+                <h1 className='text-2xl max-sm:text-xl font-bold'>
                     Next<span className='text-[#F83002]'>Career</span>
                 </h1>
 
                 {/* Desktop Nav */}
-                <ul className='hidden md:flex font-medium text-sm items-center gap-6'>
+                <ul className='hidden md:flex font-medium text-md items-center gap-6'>
                     {user && user.role.toLowerCase() === 'recruiter' ? (
                         <>
                             <li><Link to="/admin/companies">Companies</Link></li>
@@ -71,29 +71,29 @@ const Navbar = () => {
                                     <AvatarImage src={user?.profile?.profilePhoto || defaultPic} />
                                 </Avatar>
                             </PopoverTrigger>
-                            <PopoverContent className="w-72 max-w-xs sm:max-w-sm overflow-x-hidden mx-2">
+                            <PopoverContent className="w-80 max-w-xs sm:max-w-sm overflow-x-hidden mx-2">
                                 <div className='flex flex-col gap-3'>
                                     <div className='flex items-center gap-3'>
                                         <Avatar>
                                             <AvatarImage src={user?.profile?.profilePhoto || defaultPic} />
                                         </Avatar>
                                         <div>
-                                            <h4 className='font-semibold'>{user?.fullname}</h4>
-                                            <p className='text-xs mt-1 text-muted-foreground'>{user?.profile?.bio}</p>
+                                            <h4 className='font-semibold text-lg'>{user?.fullname}</h4>
+                                            <p className='text-sm mt-1 text-muted-foreground'>{user?.profile?.bio}</p>
                                         </div>
                                     </div>
                                     <div className='flex flex-col text-gray-700'>
                                         {user?.role?.toLowerCase() === 'student' && (
-                                            <div className='flex items-center'>
-                                                <User2 size={16} />
+                                            <div className='flex items-center gap-2'>
+                                                <User2 size={18} />
                                                 <Link to="/profile">
-                                                    <Button variant="link" className='text-xs'>View Profile</Button>
+                                                    <Button variant="link" className='text-sm'>View Profile</Button>
                                                 </Link>
                                             </div>
                                         )}
-                                        <div className='flex items-center'>
-                                            <LogOut size={16} />
-                                            <Button variant="link" className='text-xs' onClick={logoutHandler}>Logout</Button>
+                                        <div className='flex items-center gap-2'>
+                                            <LogOut size={18} />
+                                            <Button variant="link" className='text-sm' onClick={logoutHandler}>Logout</Button>
                                         </div>
                                     </div>
                                 </div>

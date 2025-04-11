@@ -26,7 +26,7 @@ const HeroSection = () => {
         >
             <div className='flex flex-col gap-5 my-10'>
                 <motion.span
-                    className='mx-auto px-4 py-1 rounded-full bg-gray-100 text-[#F83002] text-sm font-medium'
+                    className='mx-auto px-4 py-1 rounded-full bg-gray-100 text-[#F83002] text-md max-sm:text-sm font-medium'
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -34,7 +34,7 @@ const HeroSection = () => {
                     No. 1 Job Hunt Website
                 </motion.span>
 
-                <h1 className='text-4xl font-bold'>
+                <h1 className='text-5xl font-bold max-sm:text-3xl'>
                     Search, Apply & <br /> Get Your <span className='text-[#6A38C2]'>Dream Jobs</span>
                 </h1>
 

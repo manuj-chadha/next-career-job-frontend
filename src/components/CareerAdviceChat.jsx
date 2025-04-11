@@ -36,11 +36,12 @@ const CareerAdviceChat = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-
+    
     const query =
-      "You're a friendly, helpful chatbot assistant in a job portal application. Please give your responses in a conversational, step-by-step way. Only ask 1 or 2 questions at a time. Keep each message concise (3-5 lines max). Use simple formatting and bullet points if needed. Avoid long paragraphs. Now answer: " +
-      input;
-
+    "You're a friendly, helpful chatbot assistant in a job portal application. Please give your responses in a conversational, step-by-step way. Only ask 1 or 2 questions at a time. Keep each message concise (3-5 lines max). Use simple formatting and bullet points if needed. Avoid long paragraphs. Now answer: " +
+    input;
+    
+    setInput('')
     const newMessages = [...messages, { sender: 'user', text: input }];
     setMessages(newMessages);
     setIsLoading(true);

@@ -4,7 +4,6 @@ import { Button } from '../ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
-import axios from 'axios'
 import { COMPANY_API_END_POINT } from '@/utils/constant'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -22,7 +21,7 @@ const CompanySetup = () => {
         location: "",
         file: null
     });
-    const {singleCompany} = useSelector(store=>store.company);
+    const { singleCompany } = useSelector(store => store.company);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -59,7 +58,7 @@ const CompanySetup = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Something went wrong.");
         } finally {
             setLoading(false);
         }
@@ -73,27 +72,29 @@ const CompanySetup = () => {
             location: singleCompany.location || "",
             file: singleCompany.logo || null
         })
-    },[singleCompany]);
+    }, [singleCompany]);
 
     return (
         <div>
             <Navbar />
-            <div className='max-w-xl mx-auto my-10'>
+            <div className='max-w-xl mx-auto my-10 px-4 sm:px-6'>
                 <form onSubmit={submitHandler}>
-                    <div className='flex items-center gap-5 p-8'>
-                        <Button onClick={() => navigate("/admin/companies")} variant="outline" className="flex items-center gap-2 text-gray-500 font-semibold">
-                            <ArrowLeft />
+                    <div className='flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 p-4 px-0 sm:p-8'>
+                        <Button onClick={() => navigate("/admin/companies")} variant="outline" className="flex items-center gap-2 text-gray-500 font-semibold w-fit">
+                            <ArrowLeft className="w-4 h-4" />
                             <span>Back</span>
                         </Button>
-                        <h1 className='font-bold text-xl'>Company Setup</h1>
+                        <h1 className='font-bold text-lg sm:text-xl'>Company Setup</h1>
                     </div>
-                    <div className='grid grid-cols-2 gap-4'>
-                        <div>
+
+                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 '>
+                        <div >
                             <Label>Company Name</Label>
                             <Input
                                 type="text"
                                 name="name"
                                 value={input.name}
+                                className='max-sm:text-sm max-sm:mt-2'
                                 onChange={changeEventHandler}
                             />
                         </div>
@@ -103,6 +104,7 @@ const CompanySetup = () => {
                                 type="text"
                                 name="description"
                                 value={input.description}
+                                className='max-sm:text-sm max-sm:mt-2'
                                 onChange={changeEventHandler}
                             />
                         </div>
@@ -112,6 +114,7 @@ const CompanySetup = () => {
                                 type="text"
                                 name="website"
                                 value={input.website}
+                                className='max-sm:text-sm max-sm:mt-2'
                                 onChange={changeEventHandler}
                             />
                         </div>
@@ -121,24 +124,33 @@ const CompanySetup = () => {
                                 type="text"
                                 name="location"
                                 value={input.location}
+                                className='max-sm:text-sm max-sm:mt-2'
                                 onChange={changeEventHandler}
                             />
                         </div>
-                        <div>
+                        <div className='sm:col-span-2'>
                             <Label>Logo</Label>
                             <Input
                                 type="file"
                                 accept="image/*"
+                                className='max-sm:text-sm max-sm:mt-2'
                                 onChange={changeFileHandler}
                             />
                         </div>
                     </div>
-                    {
-                        loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Update</Button>
-                    }
+
+                    <div className='mt-6'>
+                        {loading ? (
+                            <Button className="w-full">
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                Please wait
+                            </Button>
+                        ) : (
+                            <Button type="submit" className="w-full">Update</Button>
+                        )}
+                    </div>
                 </form>
             </div>
-
         </div>
     )
 }

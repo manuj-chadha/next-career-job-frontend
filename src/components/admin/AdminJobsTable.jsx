@@ -26,7 +26,7 @@ const AdminJobsTable = () => {
     return (
         <div>
             <Table>
-                <TableCaption>A list of your recent  posted jobs</TableCaption>
+                <TableCaption className='max-sm:py-4'>A list of your recent posted jobs</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Company Name</TableHead>
@@ -45,7 +45,7 @@ const AdminJobsTable = () => {
                                 <TableCell className="text-right cursor-pointer">
                                     <Popover>
                                         <PopoverTrigger><MoreHorizontal /></PopoverTrigger>
-                                        <PopoverContent className="w-32">
+                                        <PopoverContent className="w-32 max-sm:mr-2">
                                             <div onClick={()=> navigate(`/admin/jobs/update/${job.id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
                                                 <Edit2 className='w-4' />
                                                 <span>Edit</span>

@@ -4,6 +4,7 @@ import Job from './Job';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import Footer from './shared/Footer';
 
 // const randomJobs = [1, 2,45];
 
@@ -19,8 +20,8 @@ const Browse = () => {
     return (
         <div>
             <Navbar />
-            <div className='max-w-7xl mx-auto my-10'>
-                <h1 className='font-bold text-xl my-10'>Search Results ({allJobs.length})</h1>
+            <div className='max-w-7xl mx-auto my-5 px-8'>
+                <h1 className='font-bold text-lg my-5'>Search Results ({allJobs.length})</h1>
                 <div className='grid grid-cols-3 gap-4'>
                     {
                         allJobs.map((job) => {
@@ -32,6 +33,7 @@ const Browse = () => {
                 </div>
 
             </div>
+            <Footer />
         </div>
     )
 }

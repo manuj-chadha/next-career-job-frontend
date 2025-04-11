@@ -33,8 +33,8 @@ const Navbar = () => {
         }
     };
 
-    const navItemClasses = 'transition-all duration-200 hover:text-[#6A38C2] hover:scale-105 shadow-sm rounded-b-lg px-4 py-3';
-
+    const navItemClasses = 'transition-all duration-200 hover:text-[#6A38C2] hover:scale-105';
+    const navItemMobileClasses='transition-all duration-200 hover:text-[#6A38C2] hover:scale-105 shadow-sm rounded-b-lg px-4 py-3';
     return (
         <div className="bg-white z-50 shadow-sm rounded-lg relative overflow-x-hidden">
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16 px-3'>
@@ -175,22 +175,22 @@ const Navbar = () => {
                                 </>
                             ) : (
                                 <>
-                                    <li className={navItemClasses}>
+                                    <li className={navItemMobileClasses}>
                                         <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-3'>
                                             <Home size={18} /> Home
                                         </Link>
                                     </li>
-                                    <li className={navItemClasses}>
+                                    <li className={navItemMobileClasses}>
                                         <Link to="/jobs" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-3'>
                                             <Briefcase size={18} /> Jobs
                                         </Link>
                                     </li>
-                                    <li className={navItemClasses}>
+                                    <li className={navItemMobileClasses}>
                                         <Link to="/browse" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-3'>
                                             <Search size={18} /> Browse
                                         </Link>
                                     </li>
-                                    <li className={navItemClasses}>
+                                    <li className={navItemMobileClasses}>
                                         <Link to="/career-chat-ai" onClick={() => setIsMobileMenuOpen(false)} className='flex items-center gap-3'>
                                             <Bot size={18} /> Career AI
                                         </Link>

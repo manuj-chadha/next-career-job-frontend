@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './shared/Navbar';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
@@ -21,20 +21,33 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-4 md:p-8">
+      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-4 max-md:mx-2">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className='flex flex-row justify-between w-full'>
             <Avatar className="h-24 w-24">
               <AvatarImage src={user?.profile?.profilePhoto} alt="profile" />
             </Avatar>
+            {
+              (window.innerWidth<768) && <>
+              <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
+            <Pen className="w-4 h-4" />
+          </Button>
+              </>
+            }
+            </div>
             <div>
               <h1 className="font-bold text-xl sm:text-2xl pb-1">{user?.fullname}</h1>
               <p className="text-sm text-gray-600">{user?.profile?.bio}</p>
             </div>
           </div>
-          <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
+          {
+              (window.innerWidth>=768) && <>
+              <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
             <Pen className="w-4 h-4" />
           </Button>
+              </>
+            }
         </div>
 
         <div className="my-5 space-y-2 text-sm">

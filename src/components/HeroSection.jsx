@@ -24,7 +24,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
         >
-            <div className='flex flex-col gap-5 my-10'>
+            <div className='flex flex-col gap-5 my-16'>
                 <motion.span
                     className='mx-auto px-4 py-1 rounded-full bg-gray-100 text-[#F83002] text-md max-sm:text-sm font-medium'
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -38,7 +38,7 @@ const HeroSection = () => {
                     Search, Apply & <br /> Get Your <span className='text-[#6A38C2]'>Dream Jobs</span>
                 </h1>
 
-                <p className='max-w-2xl mx-auto px-4 text-sm text-gray-600'>
+                <p className='max-w-2xl mx-auto px-4 text-md text-gray-600'>
                     Job portal designed to help users effortlessly explore job opportunities, apply with ease,
                     and secure their ideal roles across various industries.
                 </p>

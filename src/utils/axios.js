@@ -16,13 +16,7 @@ API.interceptors.request.use(
         return config;
     },
     (error) => {
-        if (error.response && error.response.status === 401) {
-          store.dispatch(setUser(null));
-          localStorage.removeItem('token'); 
-          toast.error('Session expired. Please log in again.');
-    
-          window.location.href = '/login';
-        }
+        
         return Promise.reject(error);
       }
 );
@@ -31,11 +25,14 @@ API.interceptors.request.use(
 API.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem("token");
-            window.location.href = "/login"; // Redirect to login on unauthorized access
-        }
-        return Promise.reject(error);
+        if (error.response && error.response.status === 401) {
+            store.dispatch(setUser(null));
+            localStorage.removeItem('token'); 
+            toast.error('Session expired. Please log in again.');
+      
+            window.location.href = '/login';
+          }
+          return Promise.reject(error);
     }
 );
 

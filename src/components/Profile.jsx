@@ -7,47 +7,78 @@ import { Badge } from './ui/badge';
 import { Label } from './ui/label';
 import AppliedJobTable from './AppliedJobTable';
 import UpdateProfileDialog from './UpdateProfileDialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
 import Footer from './shared/Footer';
 import { toast } from 'sonner';
 import API from '@/utils/axios';
 import { USER_API_END_POINT } from '@/utils/constant';
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
+import { setUser } from '@/redux/authSlice';
 
 const isResume = true;
 
 const Profile = () => {
   useGetAppliedJobs();
   const [open, setOpen] = useState(false);
+  const [opened, setOpened] = useState(false);
   const { user } = useSelector(store => store.auth);
   const fileInputRef = useRef(null);
-
   const [file, setFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(user?.profile?.profilePhoto);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const dispatch=useDispatch();
+
+  const handleEditClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-  const handleEditClick = () => {
-    fileInputRef.current?.click(); // Open file picker
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImage(reader.result); // preview immediately
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const handleUpload = async () => {
+    if (!file) return;
+    setIsUploading(true);
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      await API.post(`${USER_API_END_POINT}/profile/picture/update`, formData, {
+      const res = await API.put(`${USER_API_END_POINT}/profile/picture/update`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true
       });
-      toast.success("File uploaded successfully");
+      console.log(res);
+      
+
+      if (res.status === 200) {
+        toast.success("Profile picture updated successfully");
+        dispatch(setUser(res.data.data));
+        setOpened(false);
+      }
     } catch (error) {
-      console.error("Upload failed", error);
+      toast.error("Error updating profile picture");
+    } finally {
+      setIsUploading(false);
     }
   };
 
+  useEffect(() => {
+    if (file) {
+      handleUpload();
+    }
+  }, [file]);
 
   return (
     <div>
@@ -56,47 +87,45 @@ const Profile = () => {
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div className="flex flex-row max-md:flex-col items-center gap-6 lg:mt-4">
             <div className='flex flex-row justify-between max-md:w-full'>
-              <Popover>
-                  <PopoverTrigger>
+              <Popover open={opened} onOpenChange={setOpened}>
+                <PopoverTrigger>
                   <Avatar className="h-24 w-24">
-                    <AvatarImage src={user?.profile?.profilePhoto} alt="profile" />
+                    <AvatarImage src={previewImage} alt="profile" />
                   </Avatar>
-                  </PopoverTrigger>
-                  
-                  <PopoverContent className="w-fit -mt-16 max-md:ml-4 rounded-lg py-1.5 px-2 shaded-lg bg-gray-50 z-50 max-sm:mr-3">
-                      <div onClick={handleEditClick} className='w-fit flex items-center gap-2 cursor-pointer text-sm'>
-                          <Edit2 className='w-3' />
-                          <span className='text-sm'>Edit</span>
-                      </div>
-                      {/* Hidden File Input */}
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleUpload}
-                      />
-                  </PopoverContent>
+                </PopoverTrigger>
+                <PopoverContent className="w-fit -mt-16 max-md:ml-4 rounded-lg py-1.5 px-2 shaded-lg bg-gray-50 z-50 max-sm:mr-3">
+                  <div onClick={handleEditClick} className='w-fit flex items-center gap-2 cursor-pointer text-sm'>
+                    <Edit2 className='w-3' />
+                    <span className='text-sm'>{isUploading ? "Uploading..." : "Edit"}</span>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    disabled={isUploading}
+                  />
+                </PopoverContent>
               </Popover>
-            
-            {
-              (window.innerWidth<768) && 
-              <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
-            <Pen className="w-4 h-4" />
-          </Button>
-            }
+
+              {(window.innerWidth < 768) &&
+                <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
+                  <Pen className="w-4 h-4" />
+                </Button>
+              }
             </div>
             <div>
               <h1 className="font-bold text-xl sm:text-2xl pb-1">{user?.fullname}</h1>
               <p className="text-sm text-gray-600">{user?.profile?.bio}</p>
             </div>
           </div>
-          {
-              (window.innerWidth>=768) && 
-              <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
-            <Pen className="w-4 h-4" />
-          </Button>
-            }
+
+          {(window.innerWidth >= 768) &&
+            <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
+              <Pen className="w-4 h-4" />
+            </Button>
+          }
         </div>
 
         <div className="my-5 space-y-2 text-sm">
@@ -113,12 +142,10 @@ const Profile = () => {
         <div className="my-5">
           <h2 className="text-md font-bold pb-1">Skills</h2>
           <div className="flex flex-wrap gap-2">
-            {user?.profile?.skills.length !== 0
-              ? user?.profile?.skills.map((item, index) => (
-                  <Badge key={index} className="px-2 py-1">
-                    {item}
-                  </Badge>
-                ))
+            {user?.profile?.skills?.length
+              ? user.profile.skills.map((item, index) => (
+                <Badge key={index} className="px-2 py-1">{item}</Badge>
+              ))
               : <span>NA</span>}
           </div>
         </div>

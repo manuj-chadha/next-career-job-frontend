@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from './shared/Navbar';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
-import { Contact, Mail, Pen } from 'lucide-react';
+import { Contact, Edit2, Mail, Pen } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Label } from './ui/label';
 import AppliedJobTable from './AppliedJobTable';
@@ -10,6 +10,10 @@ import UpdateProfileDialog from './UpdateProfileDialog';
 import { useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
 import Footer from './shared/Footer';
+import { toast } from 'sonner';
+import API from '@/utils/axios';
+import { USER_API_END_POINT } from '@/utils/constant';
+import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 
 const isResume = true;
 
@@ -17,23 +21,69 @@ const Profile = () => {
   useGetAppliedJobs();
   const [open, setOpen] = useState(false);
   const { user } = useSelector(store => store.auth);
+  const fileInputRef = useRef(null);
+
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  const handleEditClick = () => {
+    fileInputRef.current?.click(); // Open file picker
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      await API.post(`${USER_API_END_POINT}/profile/picture/update`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("File uploaded successfully");
+    } catch (error) {
+      console.error("Upload failed", error);
+    }
+  };
+
 
   return (
     <div>
       <Navbar />
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-4 max-md:mx-2">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className='flex flex-row justify-between w-full'>
-            <Avatar className="h-24 w-24">
-              <AvatarImage src={user?.profile?.profilePhoto} alt="profile" />
-            </Avatar>
+          <div className="flex flex-row max-md:flex-col items-center gap-6 lg:mt-4">
+            <div className='flex flex-row justify-between max-md:w-full'>
+              <Popover>
+                  <PopoverTrigger>
+                  <Avatar className="h-24 w-24">
+                    <AvatarImage src={user?.profile?.profilePhoto} alt="profile" />
+                  </Avatar>
+                  </PopoverTrigger>
+                  
+                  <PopoverContent className="w-fit -mt-16 max-md:ml-4 rounded-lg py-1.5 px-2 shaded-lg bg-gray-50 z-50 max-sm:mr-3">
+                      <div onClick={handleEditClick} className='w-fit flex items-center gap-2 cursor-pointer text-sm'>
+                          <Edit2 className='w-3' />
+                          <span className='text-sm'>Edit</span>
+                      </div>
+                      {/* Hidden File Input */}
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleUpload}
+                      />
+                  </PopoverContent>
+              </Popover>
+            
             {
-              (window.innerWidth<768) && <>
+              (window.innerWidth<768) && 
               <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
             <Pen className="w-4 h-4" />
           </Button>
-              </>
             }
             </div>
             <div>
@@ -42,11 +92,10 @@ const Profile = () => {
             </div>
           </div>
           {
-              (window.innerWidth>=768) && <>
+              (window.innerWidth>=768) && 
               <Button onClick={() => setOpen(true)} className="self-start sm:self-center" variant="outline">
             <Pen className="w-4 h-4" />
           </Button>
-              </>
             }
         </div>
 

@@ -15,7 +15,16 @@ API.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => {
+        if (error.response && error.response.status === 401) {
+          store.dispatch(setUser(null));
+          localStorage.removeItem('token'); 
+          toast.error('Session expired. Please log in again.');
+    
+          window.location.href = '/login';
+        }
+        return Promise.reject(error);
+      }
 );
 
 

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Route, RouterProvider } from 'react-router-dom'
 import Navbar from './components/shared/Navbar'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
@@ -16,40 +16,41 @@ import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import UpdateJob from './components/admin/UpdateJob'
 import CareerAdviceChat from './components/CareerAdviceChat'
+import UserRoute from './components/UserRoute'
 
 
 const appRouter = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
+    element: <UserRoute><Home /></UserRoute>
   },
   {
     path: '/login',
-    element: <Login />
+    element: <UserRoute><Login /></UserRoute>
   },
   {
     path: '/signup',
-    element: <Signup />
+    element: <UserRoute><Signup /></UserRoute>
   },
   {
     path: "/jobs",
-    element: <Jobs />
+    element: <UserRoute><Jobs /></UserRoute>
   },
   {
     path: "/career-chat-ai",
-    element: <CareerAdviceChat />
+    element: <UserRoute><CareerAdviceChat /></UserRoute>
   },
   {
     path: "/description/:id",
-    element: <JobDescription />
+    element: <UserRoute><JobDescription /></UserRoute>
   },
   {
     path: "/browse",
-    element: <Browse />
+    element: <UserRoute><Browse /></UserRoute>
   },
   {
     path: "/profile",
-    element: <Profile />
+    element: <UserRoute><Profile /></UserRoute>
   },
   // admin ke liye yha se start hoga
   // {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { SendHorizonal, Moon, Sun, MessageSquareText } from 'lucide-react';
 import { Button } from './ui/button';
 import botAvatar from '../assets/bot.png';
-import userAvatar from '../assets/user.png';
+import userAvatar from '../assets/image.png';
 import Navbar from './shared/Navbar';
 import Footer from './shared/Footer';
 import { useSelector } from 'react-redux';

@@ -8,6 +8,7 @@ import useGetAllJobs from '@/hooks/useGetAllJobs'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Recruiter from './admin/Recruiter'
+import FloatingChatBot from './FloatingChatBot'
 
 const Home = () => {
   useGetAllJobs();
@@ -30,7 +31,7 @@ const Home = () => {
          </>
       }
       <Footer />
-      
+      <FloatingChatBot />
     </div>
   )
 }

@@ -15,8 +15,8 @@ import API from '@/utils/axios';
 import { USER_API_END_POINT } from '@/utils/constant';
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { setUser } from '@/redux/authSlice';
+import defaultPic from "../assets/image.png";
 
-const isResume = true;
 
 const Profile = () => {
   useGetAppliedJobs();
@@ -27,9 +27,9 @@ const Profile = () => {
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(user?.profile?.profilePhoto);
   const [isUploading, setIsUploading] = useState(false);
-
+  
   const dispatch=useDispatch();
-
+  
   const handleEditClick = () => {
     fileInputRef.current?.click();
   };
@@ -90,7 +90,7 @@ const Profile = () => {
               <Popover open={opened} onOpenChange={setOpened}>
                 <PopoverTrigger>
                   <Avatar className="h-24 w-24">
-                    <AvatarImage src={previewImage} alt="profile" />
+                    <AvatarImage src={previewImage ? previewImage : defaultPic} alt="profile" />
                   </Avatar>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit -mt-16 max-md:ml-4 rounded-lg py-1.5 px-2 shaded-lg bg-gray-50 z-50 max-sm:mr-3">
@@ -117,7 +117,7 @@ const Profile = () => {
             </div>
             <div>
               <h1 className="font-bold text-xl sm:text-2xl pb-1">{user?.fullname}</h1>
-              <p className="text-sm text-gray-600">{user?.profile?.bio}</p>
+              <p className="text-sm text-gray-600">{user?.profile?.bio ? user.profile.bio : "Update and write about yourself."}</p>
             </div>
           </div>
 
@@ -146,13 +146,13 @@ const Profile = () => {
               ? user.profile.skills.map((item, index) => (
                 <Badge key={index} className="px-2 py-1">{item}</Badge>
               ))
-              : <span>NA</span>}
+              : <span>You haven't added any skills.</span>}
           </div>
         </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label className="text-md font-bold">Resume</Label>
-          {isResume ? (
+          {user?.profile?.resume ? (
             <a
               target="_blank"
               rel="noreferrer"
@@ -162,7 +162,7 @@ const Profile = () => {
               {user?.profile?.resumeOriginalName}
             </a>
           ) : (
-            <span>NA</span>
+            <span>No resume uploaded.</span>
           )}
         </div>
       </div>

@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { X, Filter } from 'lucide-react';
 
 const Jobs = () => {
-    const { allJobs, searchedQuery } = useSelector(store => store.job);
+    const { allJobs, searchedQuery, jobLoading } = useSelector(store => store.job);
     const [filterJobs, setFilterJobs] = useState(allJobs);
     const [showFilter, setShowFilter] = useState(false);
 
@@ -61,6 +61,11 @@ const Jobs = () => {
                     {/* Job Listings */}
                     <div className='flex-1 h-[88vh] overflow-y-auto px-2 pb-5'>
                         {
+                            jobLoading ? <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {Array.from({ length: 6 }).map((_, idx) => (
+                              <JobSkeleton key={idx} />
+                            ))}
+                          </div> :
                             filterJobs.length <= 0 ? (
                                 <span className='text-center text-gray-500'>Job not found</span>
                             ) : (

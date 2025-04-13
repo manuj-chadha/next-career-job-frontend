@@ -69,7 +69,7 @@ const Navbar = () => {
                     ) : (
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Avatar className='cursor-pointer border-2 max-w-16 border-gray-500'>
+                                <Avatar className='cursor-pointer border-2 max-w-18'>
                                     <AvatarImage src={user?.profile?.profilePhoto || defaultPic} />
                                 </Avatar>
                             </PopoverTrigger>

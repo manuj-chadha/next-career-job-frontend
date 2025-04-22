@@ -17,11 +17,20 @@ import jobSlice from "./jobSlice";
 import companySlice from "./companySlice";
 import applicationSlice from "./applicationSlice";
 
-// only persist auth slice
+// persist config for auth slice with migration logic
 const authPersistConfig = {
   key: 'auth',
   storage,
-  version: 1,
+  version: 2,  // Increment version to trigger migration
+  migrate: (state) => {
+    if (typeof state?.loading === 'string') {
+      state.loading = state.loading === 'true';  // Convert string "true"/"false" to boolean
+    }
+    if (state?.user === 'null') {
+      state.user = null;  // Convert string "null" to actual null
+    }
+    return Promise.resolve(state); // Return the modified state
+  },
 };
 
 const rootReducer = combineReducers({

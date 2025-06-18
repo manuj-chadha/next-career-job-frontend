@@ -71,7 +71,7 @@ const Login = () => {
         <div>
             <Navbar />
             <div className='flex items-center justify-center px-4'>
-                <form onSubmit={submitHandler} className='w-full max-w-md border border-gray-200 rounded-md p-6 my-10 shadow-md'>
+                <form onSubmit={submitHandler} className="w-full max-w-md border border-gray-200 rounded-md p-6 my-10 shadow-md">
                     <h1 className='font-bold text-xl mb-6 text-center'>Login</h1>
 
                     <div className='mb-4'>
@@ -83,6 +83,7 @@ const Login = () => {
                             onChange={changeEventHandler}
                             className='text-sm'
                             placeholder="Enter your email"
+                            required
                         />
                     </div>
 
@@ -96,11 +97,13 @@ const Login = () => {
                                 onChange={changeEventHandler}
                                 className='text-sm pr-10'
                                 placeholder="Enter your password"
+                                required
                             />
                             <button
                                 type="button"
                                 onClick={togglePasswordVisibility}
                                 className="absolute right-2 top-2 text-gray-600"
+                                aria-required
                             >
                                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>

@@ -8,7 +8,7 @@ const Recruiter = () => {
     const navigate = useNavigate();
 
     const handlePostJob = () => {
-        navigate("/recruiter/post-job", { state: { draftTitle: jobTitle } });
+        navigate("/admin/jobs/create", { state: { draftTitle: jobTitle } });
     }
 
     return (

@@ -1,4 +1,4 @@
-const backendUrl = import.meta.env.VITE_FRONTEND_API_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 export const USER_API_END_POINT = `${backendUrl}/users`;
 export const JOB_API_END_POINT = `${backendUrl}/jobs`;

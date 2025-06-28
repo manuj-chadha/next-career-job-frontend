@@ -9,7 +9,12 @@ const jobSlice = createSlice({
         searchJobByText:"",
         allAppliedJobs:[],
         searchedQuery:"",
-        jobLoading: false
+        jobLoading: false,
+        filters: {
+            location: '',
+            industry: '',
+            salary: ''
+        }
     },
     reducers:{
         // actions
@@ -33,7 +38,11 @@ const jobSlice = createSlice({
         },
         setJobLoading: (state, action) => {
             state.jobLoading = action.payload;
-          },
+        },
+        setFilters: (state, action) => {
+            state.filters = action.payload;
+        }
+        
     }
 });
 export const {
@@ -43,6 +52,7 @@ export const {
     setSearchJobByText, 
     setAllAppliedJobs,
     setSearchedQuery,
-    setJobLoading
+    setJobLoading,
+    setFilters
 } = jobSlice.actions;
 export default jobSlice.reducer;

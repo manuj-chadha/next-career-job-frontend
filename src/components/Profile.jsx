@@ -16,6 +16,7 @@ import { USER_API_END_POINT } from '@/utils/constant';
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { setUser } from '@/redux/authSlice';
 import defaultPic from "../assets/image.png";
+import SavedPosts from './SavedPosts';
 
 
 const Profile = () => {
@@ -79,6 +80,9 @@ const Profile = () => {
       handleUpload();
     }
   }, [file]);
+  console.log(user);
+  
+  
 
   return (
     <div>
@@ -167,9 +171,14 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl px-4 md:px-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl px-4">
         <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
         <AppliedJobTable />
+      </div>
+
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl px-4">
+        <h1 className="font-bold text-lg my-5">Saved Posts</h1>
+        <SavedPosts jobs={user?.savedJobs} />
       </div>
 
       <UpdateProfileDialog open={open} setOpen={setOpen} />

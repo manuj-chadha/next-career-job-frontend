@@ -14,13 +14,13 @@ const useGetAllJobs = () => {
             try {
                 dispatch(setJobLoading(true));
                 const res = await API.get(`${JOB_API_END_POINT}/get?keyword=${searchedQuery}`,{withCredentials:true});
-                console.log(res.data);
+                // console.log(res.data);
                 if(res.status === 200){
                     dispatch(setAllJobs(res.data.jobs));
                 }
             } catch (error) {
-                console.log(error);
-                console.log(error.response);
+                // console.log(error);
+                // console.log(error.response);
                 
             } finally {
                 dispatch(setJobLoading(false));

@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoading, setUser } from '@/redux/authSlice'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
+import API from '@/utils/axios'
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -37,7 +38,7 @@ const Login = () => {
         e.preventDefault();
         try {
             dispatch(setLoading(true));
-            const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+            const res = await API.post(`${USER_API_END_POINT}/login`, input, {
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -46,6 +47,8 @@ const Login = () => {
             if (res.status === 200) {
                 const data = res.data;
                 localStorage.setItem("token", data.token);
+                // console.log(data.userDTO);
+                
                 dispatch(setUser(data.userDTO));
                 navigate("/");
                 toast.success("Logged in successfully.");

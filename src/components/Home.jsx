@@ -9,16 +9,12 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Recruiter from './admin/Recruiter'
 import FloatingChatBot from './FloatingChatBot'
+import Faqs from './Faqs'
+
 
 const Home = () => {
   useGetAllJobs();
   const { user } = useSelector(store => store.auth);
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (user?.role.toLowerCase() === 'recruiter') {
-  //     navigate("/recruiter");
-  //   }
-  // }, [user, navigate]);
   return (
     <div>
       <Navbar />
@@ -30,6 +26,8 @@ const Home = () => {
       <LatestJobs />
          </>
       }
+      <Faqs />
+      
       <Footer />
       <FloatingChatBot />
     </div>

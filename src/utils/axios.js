@@ -2,8 +2,11 @@ import axios from "axios";
 import { toast } from "sonner";
 import store from "../redux/store.js"; // Adjust the path to your Redux store
 import { setUser } from "../redux/authSlice.js"; // Adjust path if needed
+// import { useNavigate } from "react-router-dom";
 
-const backendUrl = import.meta.env.VITE_FRONTEND_API_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
+
+// const navigate=useNavigate();
 
 const API = axios.create({
   baseURL: backendUrl,
@@ -32,7 +35,7 @@ API.interceptors.response.use(
       store.dispatch(setUser(null));
       localStorage.removeItem("token");
       toast.error("Session expired or unauthorized. Please log in again.");
-      window.location.href = "/login"; // Optionally use navigate() if you're in a component
+      // navigate("/login")
     }
 
     return Promise.reject(error);

@@ -5,6 +5,7 @@ const jobSlice = createSlice({
     initialState:{
         allJobs:[],
         allAdminJobs:[],
+        lastFetched: null,
         singleJob:null, 
         searchJobByText:"",
         allAppliedJobs:[],
@@ -20,6 +21,7 @@ const jobSlice = createSlice({
         // actions
         setAllJobs:(state,action) => {
             state.allJobs = action.payload;
+            state.lastFetched=Date.now();
         },
         setSingleJob:(state,action) => {
             state.singleJob = action.payload;

@@ -8,7 +8,7 @@ import Footer from './shared/Footer';
 import JobSkeleton from './skeletons/JobSkeleton';
 
 const Browse = () => {
-    useGetAllJobs();
+    // useGetAllJobs();
     const { allJobs, jobLoading } = useSelector(store => store.job);
     const dispatch = useDispatch();
 

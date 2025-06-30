@@ -24,12 +24,12 @@ const Home = () => {
          <HeroSection />
       <CategoryCarousel />
       <LatestJobs />
+      <FloatingChatBot />
          </>
       }
       <Faqs />
       
       <Footer />
-      <FloatingChatBot />
     </div>
   )
 }

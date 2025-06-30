@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import store from '@/redux/store';
 import API from '@/utils/axios';
 import { AI_API_END_POINT } from '@/utils/constant';
+import ReactMarkdown from 'react-markdown';
 
 const CareerAdviceChat = () => {
   const { user } = useSelector(store => store.auth);
@@ -20,7 +21,6 @@ const CareerAdviceChat = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -37,7 +37,7 @@ const CareerAdviceChat = () => {
     if (!input.trim()) return;
 
     const query =
-      "You're a friendly, helpful chatbot assistant in a job portal application. Please give your responses in a conversational, step-by-step way. Only ask 1 or 2 questions at a time. Keep each message concise (3-5 lines max). Use simple formatting and bullet points if needed. Avoid long paragraphs. Now answer: " +
+      "You're a friendly AI assistant for students on a job portal—answer career and job-related queries in a short, step-by-step, conversational style with 1–2 follow-up questions, using simple language and bullet points where helpful. Now answer: " +
       input;
 
     const newMessages = [...messages, { sender: 'user', text: input }];
@@ -56,6 +56,8 @@ const CareerAdviceChat = () => {
       );
 
       if (response.data.success) {
+        console.log(response.data.reply);
+        
         setMessages([...newMessages, { sender: 'bot', text: response.data.reply }]);
       } else {
         throw new Error('API failed');
@@ -67,20 +69,12 @@ const CareerAdviceChat = () => {
     setIsLoading(false);
   };
 
-  const themeClasses = darkMode
-    ? 'bg-[#121212] text-white'
-    : 'bg-gradient-to-tr from-[#f4f0ff] via-[#e9ddff] to-[#f4f0ff] text-black';
-
   return (
-    <div className={`h-screen w-full ${themeClasses} transition-all duration-500 flex flex-col overflow-hidden`}>
+    <div className={`h-screen w-full bg-gradient-to-tr from-[#f4f0ff] via-[#e9ddff] to-[#f4f0ff] text-black transition-all duration-500 flex flex-col overflow-hidden`}>
       <Navbar />
       <div className="flex-1 flex justify-center items-start py-4 px-2 sm:px-4 md:px-6 overflow-hidden">
         <div
-          className={`w-full h-full max-w-3xl flex flex-col rounded-3xl p-4 sm:p-6 shadow-xl border transition-all duration-500 ${
-            darkMode
-              ? 'bg-[#1e1e1e] border-gray-700'
-              : 'bg-white/40 backdrop-blur-md border-white/20'
-          }`}
+          className="w-full h-full max-w-3xl flex flex-col rounded-3xl p-4 sm:p-6 shadow-xl border transition-all duration-500 bg-white/40 backdrop-blur-md border-white/20"
         >
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
@@ -91,23 +85,10 @@ const CareerAdviceChat = () => {
               </div>
               <h2 className="text-lg sm:text-2xl font-semibold text-[#6A38C2]">Ask Career Advice</h2>
             </div>
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-transform hover:scale-110"
-              title="Toggle theme"
-            >
-              {darkMode ? (
-                <Sun className="w-5 h-5 text-yellow-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-700" />
-              )}
-            </button>
           </div>
 
           {/* Chat Window */}
-          <div className={`flex-1 overflow-y-auto flex flex-col gap-4 pr-2 mb-4 rounded-xl ${
-            darkMode ? 'scrollbar-dark' : 'scrollbar-light'
-          }`}>
+          <div className="flex-1 overflow-y-auto flex flex-col gap-4 pr-2 mb-4 rounded-xl scrollbar-light">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -126,12 +107,10 @@ const CareerAdviceChat = () => {
                   className={`max-w-[75%] px-4 py-3 rounded-xl text-sm shadow-md transition-transform group-hover:scale-[1.02] ${
                     msg.sender === 'user'
                       ? 'bg-[#6A38C2] text-white rounded-br-none'
-                      : darkMode
-                      ? 'bg-[#2b2b2b] text-gray-200 rounded-bl-none'
                       : 'bg-white text-gray-800 rounded-bl-none'
                   }`}
                 >
-                  {msg.text}
+                  <ReactMarkdown>{msg.text}</ReactMarkdown>
                 </div>
                 {msg.sender === 'user' && (
                   <img
@@ -150,15 +129,10 @@ const CareerAdviceChat = () => {
 
           {/* Input */}
           <div
-            className={`flex items-center gap-3 ${
-              darkMode ? 'bg-[#2a2a2a]' : 'bg-white/80'
-            } p-3 rounded-full shadow-md border transition`}
-          >
+            className="flex items-center gap-3 bg-white/80 p-3 rounded-full shadow-md border transition">
             <input
               type="text"
-              className={`flex-1 px-4 py-2 rounded-full outline-none text-sm ${
-                darkMode ? 'bg-[#2a2a2a] text-white' : 'bg-transparent text-black'
-              }`}
+              className='flex-1 px-4 py-2 rounded-full outline-none text-sm bg-transparent text-black'
               placeholder="Ask about resume, career paths, interviews..."
               value={input}
               onChange={(e) => setInput(e.target.value)}

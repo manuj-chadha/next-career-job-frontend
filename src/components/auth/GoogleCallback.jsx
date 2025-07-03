@@ -13,7 +13,7 @@ const GoogleCallback = () => {
 
   const fetchResponse=async(code, role)=>{
     try {
-        const res=await API.get(`http://localhost:8080/api/auth/google/callback`, {
+        const res=await API.get(`https://next-career-ten.vercel.app/api/auth/google/callback`, {
             params: { code, role },
             withCredentials: true
         });

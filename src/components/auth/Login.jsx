@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setLoading, setUser } from '@/redux/authSlice'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import API from '@/utils/axios'
+import GoogleLoginWithRole from './GoogleLoginWithRole'
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -64,6 +65,12 @@ const Login = () => {
         }
     }
 
+    const handleGoogleLogin = () => {
+        const GOOGLE_AUTH_URL = import.meta.env.VITE_GOOGLE_AUTH_URL;
+        const role = "STUDENT"; // or "recruiter"
+        const finalAuthUrl = `${GOOGLE_AUTH_URL}&state=${role}`;
+        window.location.href = finalAuthUrl;
+    };
     useEffect(() => {
         if (user) {
             navigate("/");
@@ -152,6 +159,16 @@ const Login = () => {
                         Don&apos;t have an account?{" "}
                         <Link to="/signup" className='text-blue-600 underline'>Signup</Link>
                     </span>
+                    <div className="w-full flex items-center text-sm text-gray-500 py-2.5">
+                      <div className="flex-1 border-t border-gray-300"></div>
+                      <span className="px-3">or</span>
+                      <div className="flex-1 border-t border-gray-300"></div>
+                    </div>
+
+                    <div className='text-sm flex justify-center items-center py-1 gap-3'>
+                        <span>Login with</span>
+                        <GoogleLoginWithRole />
+                    </div>
                 </form>
             </div>
         </div>

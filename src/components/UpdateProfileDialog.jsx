@@ -9,6 +9,7 @@ import { USER_API_END_POINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
 import API from '@/utils/axios';
+import { data } from 'react-router-dom';
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    formData.append("fullname", input.fullname);
+    formData.append("phoneNumber", input.phoneNumber)
     formData.append('email', input.email);
     formData.append('bio', input.bio);
     formData.append('skills', input.skills);
@@ -49,6 +52,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
     try {
       setLoading(true);
+      formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+      
       const res = await API.put(`${USER_API_END_POINT}/profile/update`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -57,6 +64,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       });
 
       if (res.status === 200) {
+        console.log(res.data.data);
+        
         dispatch(setUser(res.data.data));
         toast.success('Credentials updated successfully.');
       }
@@ -100,6 +109,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   value={value}
                   onChange={changeEventHandler}
                   className="sm:col-span-3 max-md:text-sm"
+                  contentEditable={id!="email"}
                 />
               </div>
             ))}

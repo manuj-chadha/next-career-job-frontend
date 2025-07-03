@@ -121,8 +121,8 @@ const Profile = () => {
                 </Button>
               }
             </div>
-            <div>
-              <h1 className="font-bold text-xl sm:text-2xl pb-1">{user?.fullname}</h1>
+            <div className='max-md:flex flex-col justify-start items-start gap-2'>
+              <h1 className="font-bold text-xl sm:text-2xl pb-1 text-start">{user?.fullname}</h1>
               <p className="text-sm text-gray-600">{user?.profile?.bio ? user.profile.bio : "Update and write about yourself."}</p>
             </div>
           </div>

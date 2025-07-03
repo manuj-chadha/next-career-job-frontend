@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/redux/authSlice';
 import { Loader2 } from 'lucide-react';
+import GoogleLoginWithRole from './GoogleLoginWithRole';
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -52,13 +53,13 @@ const Signup = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });
-      if (res.status === 200) {
+      if (res.data.success) {
         navigate('/login');
-        toast.success('Registration successful.');
+        toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data);
+      toast.error(error.response.data.message);
     } finally {
       dispatch(setLoading(false));
     }
@@ -73,63 +74,64 @@ const Signup = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto px-4">
+      <div className="min-h-screen flex items-center justify-center p-4">
         <form
           onSubmit={submitHandler}
-          className="w-full sm:w-[90%] md:w-2/3 lg:w-1/2 border border-gray-200 rounded-md p-4 my-10"
+          className="w-full max-w-xl border border-gray-200 rounded-md p-6 sm:p-8 bg-white"
         >
-          <h1 className="font-bold text-xl mb-5">Sign Up</h1>
+          <h1 className="font-bold text-2xl mb-6 text-center">Sign Up</h1>
 
-          <div className="my-2 pb-2">
-            <Label className="pb-2">Full Name</Label>
+          {/* Full Name */}
+          <div className="flex flex-col space-y-1.5 mb-4">
+            <Label>Full Name</Label>
             <Input
               type="text"
               value={input.fullname}
               name="fullname"
               onChange={changeEventHandler}
-              placeholder="Enter your full name"
-              className="placeholder:text-sm"
+              placeholder="Enter your name"
             />
           </div>
 
-          <div className="my-2 pb-2">
-            <Label className="pb-2">Email</Label>
+          {/* Email */}
+          <div className="flex flex-col space-y-1.5 mb-4">
+            <Label>Email</Label>
             <Input
               type="email"
               value={input.email}
               name="email"
               onChange={changeEventHandler}
-              placeholder="abc@gmail.com"
-              className="placeholder:text-sm"
+              placeholder="xyz@gmail.com"
             />
           </div>
 
-          <div className="my-2 pb-2">
-            <Label className="pb-2">Phone Number</Label>
+          {/* Phone */}
+          <div className="flex flex-col space-y-1.5 mb-4">
+            <Label>Phone Number</Label>
             <Input
               type="text"
               value={input.phoneNumber}
               name="phoneNumber"
               onChange={changeEventHandler}
-              placeholder="9090909090"
-              className="placeholder:text-sm"
+              placeholder="8080808080"
             />
           </div>
 
-          <div className="my-2 pb-2">
-            <Label className="pb-2">Password</Label>
+          {/* Password */}
+          <div className="flex flex-col space-y-1.5 mb-4">
+            <Label>Password</Label>
             <Input
               type="password"
               value={input.password}
               name="password"
               onChange={changeEventHandler}
               placeholder="Enter a strong password"
-              className="placeholder:text-sm"
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <RadioGroup className="flex flex-col max-sm:flex-row sm:items-center gap-4 my-5">
+          {/* Radio & File Inputs */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <RadioGroup className="flex flex-row items-center gap-4">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
@@ -139,7 +141,7 @@ const Signup = () => {
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="r1">Student</Label>
+                <Label>Student</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Input
@@ -150,21 +152,22 @@ const Signup = () => {
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
-                <Label htmlFor="r2">Recruiter</Label>
+                <Label>Recruiter</Label>
               </div>
             </RadioGroup>
 
-            <div className="flex items-center gap-2 mb-4 ">
+            <div className="flex items-center gap-2">
               <Label>Profile</Label>
               <Input
                 accept="image/*"
                 type="file"
                 onChange={changeFileHandler}
-                className="cursor-pointer bg-gray-100 text-sm placeholder:text-sm max-sm:px-4"
+                className="cursor-pointer"
               />
             </div>
           </div>
 
+          {/* Submit */}
           {loading ? (
             <Button className="w-full my-4">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
@@ -175,12 +178,22 @@ const Signup = () => {
             </Button>
           )}
 
-          <span className="text-sm">
+          <p className="text-sm text-center">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600">
+            <Link to="/login" className="text-blue-600 hover:underline">
               Login
             </Link>
-          </span>
+          </p>
+          <div className="w-full flex items-center text-sm text-gray-500 py-2.5">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-3">or</span>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+                          
+          <div className='text-sm flex justify-center items-center py-1 gap-3'>
+              <span>Login with</span>
+              <GoogleLoginWithRole />
+          </div>
         </form>
       </div>
     </div>

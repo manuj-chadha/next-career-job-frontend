@@ -17,6 +17,7 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 import UpdateJob from './components/admin/UpdateJob'
 import CareerAdviceChat from './components/CareerAdviceChat'
 import UserRoute from './components/UserRoute'
+import GoogleCallback from './components/auth/GoogleCallback'
 
 
 const appRouter = createBrowserRouter([
@@ -26,11 +27,15 @@ const appRouter = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <UserRoute><Login /></UserRoute>
+    element: <Login />
+  },
+  {
+    path: '/oauth2/callback',
+    element: <GoogleCallback />
   },
   {
     path: '/signup',
-    element: <UserRoute><Signup /></UserRoute>
+    element: <Signup />
   },
   {
     path: "/jobs",

@@ -32,7 +32,7 @@ const Jobs = () => {
     
 
     if (filters.location) {
-        console.log(filters.location);
+        // console.log(filters.location);
         
       result = result.filter(job =>
         job.location.toLowerCase().includes(filters.location.toLowerCase())

@@ -13,11 +13,9 @@ const useGetAllCompanies = () => {
         const fetchCompanies = async () => {
             try {
                 const res = await API.get(`${COMPANY_API_END_POINT}/get`,{withCredentials:true});
-                console.log(res);
+                // console.log(res);
                 if(res.data.success){
-                    // console.log(res.data.companies.length);
                     dispatch(setCompanies(res.data.companies));
-                    // dispatch(setCompanies(null));
                 }
 
             } catch (error) {

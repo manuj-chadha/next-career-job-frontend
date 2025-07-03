@@ -17,10 +17,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover
 import { setUser } from '@/redux/authSlice';
 import defaultPic from "../assets/image.png";
 import SavedPosts from './SavedPosts';
+import useGetSavedPosts from '@/hooks/useGetSavedPosts';
 
 
 const Profile = () => {
   useGetAppliedJobs();
+  useGetSavedPosts();
   const [open, setOpen] = useState(false);
   const [opened, setOpened] = useState(false);
   const { user } = useSelector(store => store.auth);
@@ -60,7 +62,7 @@ const Profile = () => {
         },
         withCredentials: true
       });
-      console.log(res);
+      // console.log(res);
       
 
       if (res.status === 200) {
@@ -80,7 +82,7 @@ const Profile = () => {
       handleUpload();
     }
   }, [file]);
-  console.log(user);
+  // console.log(user);
   
   
 
@@ -176,7 +178,7 @@ const Profile = () => {
         <AppliedJobTable />
       </div>
 
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl px-4">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl px-4 my-10">
         <h1 className="font-bold text-lg my-5">Saved Posts</h1>
         <SavedPosts jobs={user?.savedJobs} />
       </div>

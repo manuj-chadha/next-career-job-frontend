@@ -11,15 +11,13 @@ import {
 import { Badge } from './ui/badge'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import AppliedJobsSkeleton from './skeletons/AppliedJobsSkeleton'
 
 const AppliedJobTable = () => {
-  const { allAppliedJobs } = useSelector(store => store.job)
-  const navigate = useNavigate()
+  const { allAppliedJobs, appliedJobsLoading, appliedJobsFetched } = useSelector(store => store.job)
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(allAppliedJobs)
-  }, [])
-
+  if(appliedJobsLoading && !appliedJobsFetched) return <AppliedJobsSkeleton />
   return (
     <div className="w-full overflow-x-auto px-2 sm:px-0">
       <Table className="min-w-[600px] sm:min-w-full">

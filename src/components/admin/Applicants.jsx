@@ -18,7 +18,7 @@ const Applicants = () => {
             try {
                 const res = await API.get(`${APPLICATION_API_END_POINT}/${params.id}/applicants`, { withCredentials: true });
                 dispatch(setAllApplicants(res.data.jobWithApplicants));
-                console.log(res);
+                // console.log(res);
                 
             } catch (error) {
                 console.log(error);

@@ -28,8 +28,6 @@ const Job = ({job}) => {
   } catch (error) {
     console.error("Error saving job:", error);
     toast.error("Error saving job.");
-  } finally {
-    console.log("Loading"); // Replace with actual loading logic if needed
   }
 };
 

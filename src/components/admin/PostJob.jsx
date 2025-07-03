@@ -46,7 +46,6 @@ const PostJob = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            console.log(input);
             
             const res = await API.post(`${JOB_API_END_POINT}/post`, input, {
                 headers:{

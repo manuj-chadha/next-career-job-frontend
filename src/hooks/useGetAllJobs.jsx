@@ -32,15 +32,12 @@ const useGetAllJobs = () => {
     const now = Date.now();
     const isStale = !lastFetched || now - lastFetched > FETCH_INTERVAL;
 
-    // 🚫 Skip fetching if allJobs are fresh
     if (!isStale && allJobs.length > 0) return;
 
-    // ✅ Show loader only if no allJobs yet
     fetchJobs(isStale || allJobs.length === 0);
 
-    // 🔁 Set up background refresh
     intervalRef.current = setInterval(() => {
-      fetchJobs(false); // silent refresh
+      fetchJobs(false);
     }, FETCH_INTERVAL);
 
     return () => clearInterval(intervalRef.current);

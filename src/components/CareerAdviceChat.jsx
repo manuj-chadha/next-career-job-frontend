@@ -56,7 +56,7 @@ const CareerAdviceChat = () => {
       );
 
       if (response.data.success) {
-        console.log(response.data.reply);
+        // console.log(response.data.reply);
         
         setMessages([...newMessages, { sender: 'bot', text: response.data.reply }]);
       } else {

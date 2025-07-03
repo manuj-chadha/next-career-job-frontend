@@ -14,11 +14,7 @@ const ApplicantsTable = () => {
     const { applicants } = useSelector(store => store.application);
 
     const statusHandler = async (status, id) => {
-        console.log('called');
         try {
-            console.log("Hii");
-            console.log(applicants);
-            
             const obj={ "status": status}
             axios.defaults.withCredentials = true;
             const res = await API.put(`${APPLICATION_API_END_POINT}/status/${id}/update`, obj, { 
@@ -27,7 +23,6 @@ const ApplicantsTable = () => {
                 },
                 withCredentials: true
              });
-            console.log(res);
             if (res.status === 200) {
                 toast.success("Status updated successfully.");
             }

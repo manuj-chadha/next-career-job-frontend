@@ -13,7 +13,7 @@ const AdminJobsTable = () => {
     const navigate = useNavigate();
 
     useEffect(()=>{ 
-        console.log(allAdminJobs);
+        // console.log(allAdminJobs);
         const filteredJobs = allAdminJobs?.filter((job)=>{
             if(!searchJobByText){
                 return true;

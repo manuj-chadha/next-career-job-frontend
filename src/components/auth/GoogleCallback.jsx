@@ -13,11 +13,14 @@ const GoogleCallback = () => {
 
   const fetchResponse=async(code, role)=>{
     try {
-        const res=await API.get(`https://next-career-ten.vercel.app/api/auth/google/callback`, {
+        const res=await API.get(`https://next-career-job-backend.onrender.com/api/auth/google/callback`, {
             params: { code, role },
             withCredentials: true
         });
         if(res.status===200){
+          console.log(res.data);
+          console.log(res);
+          
             localStorage.setItem("token", res.data.token);
             dispatch(setUser(res.data.user))
             navigate("/");

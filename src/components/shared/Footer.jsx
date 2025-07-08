@@ -22,6 +22,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
+        <div className='p-2 pt-8 text-center'>Made with by ❤ Manuj Chadha</div>
       </div>
     </footer>
   );

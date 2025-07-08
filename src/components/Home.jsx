@@ -16,8 +16,10 @@ const Home = () => {
   useGetAllJobs();
   const { user } = useSelector(store => store.auth);
   return (
+    
     <div>
-      <Navbar />
+      <div className='relative'>
+      <div className="grid-background"> </div>
       {
         user?.role?.toLowerCase() === 'recruiter' ? <Recruiter />
          : <>
@@ -27,10 +29,9 @@ const Home = () => {
       <FloatingChatBot />
          </>
       }
+      </div>
       <Faqs />
-      
-      <Footer />
-    </div>
+      </div>
   )
 }
 

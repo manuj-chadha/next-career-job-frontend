@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SendHorizonal, Moon, Sun, MessageSquareText } from 'lucide-react';
+import { SendHorizonal, MessageSquareText } from 'lucide-react';
 import { Button } from './ui/button';
 import botAvatar from '../assets/bot.png';
 import userAvatar from '../assets/image.png';
-import Navbar from './shared/Navbar';
-import Footer from './shared/Footer';
 import { useSelector } from 'react-redux';
 import store from '@/redux/store';
 import API from '@/utils/axios';
@@ -21,15 +19,21 @@ const CareerAdviceChat = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+
+  const chatBoxRef = useRef(null); // ✅ scroll container
+  const isInitialRender = useRef(true);
 
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
   };
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     scrollToBottom();
   }, [messages]);
 
@@ -56,8 +60,6 @@ const CareerAdviceChat = () => {
       );
 
       if (response.data.success) {
-        // console.log(response.data.reply);
-        
         setMessages([...newMessages, { sender: 'bot', text: response.data.reply }]);
       } else {
         throw new Error('API failed');
@@ -70,25 +72,29 @@ const CareerAdviceChat = () => {
   };
 
   return (
-    <div className={`h-screen w-full bg-gradient-to-tr from-[#f4f0ff] via-[#e9ddff] to-[#f4f0ff] text-black transition-all duration-500 flex flex-col overflow-hidden`}>
-      <Navbar />
+    <div className="max-h-[100vh] min-h-[90vh] w-full bg-gradient-to-tr from-[#f9f7fd] via-[#f2ebfc] to-[#f9f7fd] text-black flex flex-col overflow-hidden">
       <div className="flex-1 flex justify-center items-start py-4 px-2 sm:px-4 md:px-6 overflow-hidden">
-        <div
-          className="w-full h-full max-w-3xl flex flex-col rounded-3xl p-4 sm:p-6 shadow-xl border transition-all duration-500 bg-white/40 backdrop-blur-md border-white/20"
-        >
+      <div className="grid-background"></div>
+        <div className="w-full max-h-[100vh] min-h-[85vh] max-w-3xl flex flex-col rounded-3xl p-4 sm:p-6 shadow-xl border bg-white/60 backdrop-blur-md border-white/30">
+
+
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
-              {/* Icon only on mobile */}
               <div className="block sm:hidden">
                 <MessageSquareText className="w-5 h-5 text-[#6A38C2]" />
               </div>
-              <h2 className="text-lg sm:text-2xl font-semibold text-[#6A38C2]">Ask Career Advice</h2>
+              <h2 className="text-lg sm:text-2xl font-semibold text-[#6A38C2]">
+                Ask Career Advice
+              </h2>
             </div>
           </div>
 
-          {/* Chat Window */}
-          <div className="flex-1 overflow-y-auto flex flex-col gap-4 pr-2 mb-4 rounded-xl scrollbar-light">
+          {/* Chat box scrollable */}
+          <div
+            ref={chatBoxRef}
+            className="flex-1 overflow-y-auto flex flex-col gap-4 pr-2 mb-4 rounded-xl scrollbar-light"
+          >
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -121,18 +127,17 @@ const CareerAdviceChat = () => {
                 )}
               </div>
             ))}
+
             {isLoading && (
               <div className="text-sm italic text-gray-500">Thinking...</div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}
-          <div
-            className="flex items-center gap-3 bg-white/80 p-3 rounded-full shadow-md border transition">
+          <div className="flex items-center gap-3 bg-white/80 p-3 rounded-full shadow-md border">
             <input
               type="text"
-              className='flex-1 px-4 py-2 rounded-full outline-none text-sm bg-transparent text-black'
+              className="flex-1 px-4 py-2 rounded-full outline-none text-sm bg-transparent text-black"
               placeholder="Ask about resume, career paths, interviews..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -147,7 +152,6 @@ const CareerAdviceChat = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

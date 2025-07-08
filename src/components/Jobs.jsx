@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './shared/Navbar';
 import FilterCard from './FilterCard';
 import Job from './Job';
 import { useSelector } from 'react-redux';
@@ -65,9 +64,9 @@ const Jobs = () => {
 
   return (
     <div>
-      <Navbar />
       <div className='max-w-8xl mx-auto mt-5 sm:px-6 md:px-8'>
         {/* Mobile Filter Toggle Button */}
+        <div className="grid-background"></div>
         <div className='lg:hidden mb-4'>
           <button
             onClick={() => setShowFilter(true)}

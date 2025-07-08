@@ -145,3 +145,51 @@ body {
 .animate-fade-in-down {
   animation: fade-in-down 0.5s ease-out forwards;
 }
+
+
+.grid-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      to right,
+      rgba(78, 75, 75, 0.05) 1px ,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(61, 60, 60, 0.1) 1px , transparent 1px ); 
+
+
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.grid-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent, #fcfcfce6);
+}
+
+
+.gradient{
+   background: linear-gradient(to bottom, rgb(156 163 175) 0%, rgb(229 231 235) 50%, rgb(75 85 99) 100%);
+}
+
+.gradient-title{
+  /* gradient font-extrabold tracking-tighter text-transparent bg-clip-text pb-2 pr-2; */
+  background-image: linear-gradient(to bottom, rgb(156 163 175) 0%, rgb(229 231 235) 50%, rgb(75 85 99) 100%);
+font-weight: 800;
+letter-spacing: -0.05em;
+color: transparent;
+-webkit-background-clip: text;
+background-clip: text;
+padding-bottom: 0.5rem;
+padding-right: 0.5rem;
+
+}

@@ -19,9 +19,9 @@ const Browse = () => {
     }, []);
 
     return (
-        <div>
-            <Navbar />
-            <div className='max-w-7xl mx-auto my-5 px-4 sm:px-6 md:px-8'>
+        <div className='relative'>
+            <div className="grid-background"></div>
+            <div className='max-w-7xl mx-auto py-2 pb-10 px-4 sm:px-6 md:px-8'>
                 <h1 className='font-bold text-lg sm:text-xl my-5'>
                     Search Results ({allJobs.length})
                 </h1>
@@ -41,7 +41,6 @@ const Browse = () => {
                 </div>
                 }
             </div>
-            <Footer />
         </div>
     );
 };

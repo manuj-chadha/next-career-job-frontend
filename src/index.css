@@ -175,6 +175,11 @@ body {
   height: 100%;
   background: radial-gradient(circle, transparent, #fcfcfce6);
 }
+@media screen and (max-width: 680px){
+  .grid-background {
+    background: none;
+  }
+}
 
 
 .gradient{

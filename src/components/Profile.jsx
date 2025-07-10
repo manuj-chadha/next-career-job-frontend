@@ -88,7 +88,6 @@ const Profile = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-4 max-md:mx-2">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div className="flex flex-row max-md:flex-col items-center gap-6 lg:mt-4">
@@ -184,7 +183,6 @@ const Profile = () => {
       </div>
 
       <UpdateProfileDialog open={open} setOpen={setOpen} />
-      <Footer />
     </div>
   );
 };

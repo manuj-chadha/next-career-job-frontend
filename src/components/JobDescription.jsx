@@ -63,7 +63,6 @@ const JobDescription = () => {
 
   return (
     <>
-    <Navbar />
     <div className="max-w-5xl mx-auto my-12 max-sm:my-6 px-6">
       <div className="bg-white p-6 md:p-10 rounded-xl shadow-xl space-y-6">
         {/* Header */}

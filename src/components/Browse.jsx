@@ -14,7 +14,7 @@ const Browse = () => {
     const [page, setPage] = useState(0);
 
     // Call your hook with current page
-    useGetAllJobs(page, 12);
+    const { totalEntries }=useGetAllJobs(page, 12);
 
     const observer = useRef();
     const lastJobRef = useCallback(node => {
@@ -47,7 +47,7 @@ const Browse = () => {
             <div className="grid-background"></div>
             <div className='max-w-7xl mx-auto py-2 pb-10 px-4 sm:px-6 md:px-8'>
                 <h1 className='font-bold text-lg sm:text-xl my-5'>
-                    Search Results ({allJobs.length})
+                    Search Results ({totalEntries})
                 </h1>
 
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>

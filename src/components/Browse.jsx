@@ -14,7 +14,7 @@ const Browse = () => {
     const [page, setPage] = useState(0);
 
     // Call your hook with current page
-    useGetAllJobs(page, 10);
+    useGetAllJobs(page, 12);
 
     const observer = useRef();
     const lastJobRef = useCallback(node => {
@@ -58,14 +58,14 @@ const Browse = () => {
                             return <Job key={job.id} job={job} />;
                         }
                     })}
-                    {jobLoading && page > 0 && (
+                </div>
+                {jobLoading && page > 0 && (
                     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {Array.from({ length: 3 }).map((_, idx) => (
                             <JobSkeleton key={idx} />
                         ))}
                     </div>
                 )}
-                </div>
 
                 
             </div>

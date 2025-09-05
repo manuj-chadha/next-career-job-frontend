@@ -4,7 +4,7 @@ import { setAllJobs, setJobLoading } from '@/redux/jobSlice';
 import API from '@/utils/axios';
 import { JOB_API_END_POINT } from '@/utils/constant';
 
-const useGetAllJobs = (page = 0, size = 10) => {
+const useGetAllJobs = (page = 0, size = 12) => {
   const dispatch = useDispatch();
   const { searchedQuery, lastFetched, allJobs } = useSelector(store => store.job);
   const intervalRef = useRef(null);

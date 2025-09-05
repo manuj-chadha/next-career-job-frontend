@@ -58,15 +58,16 @@ const Browse = () => {
                             return <Job key={job.id} job={job} />;
                         }
                     })}
-                </div>
-
-                {jobLoading && page > 0 && (
+                    {jobLoading && page > 0 && (
                     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {Array.from({ length: 3 }).map((_, idx) => (
                             <JobSkeleton key={idx} />
                         ))}
                     </div>
                 )}
+                </div>
+
+                
             </div>
         </div>
     );

@@ -38,9 +38,11 @@ const Navbar = () => {
     return (
         <div className="bg-white z-50 shadow-sm rounded-lg relative overflow-x-hidden">
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16 px-3'>
+                <Link to='/'>
                 <h1 className='text-2xl max-sm:text-xl font-bold'>
                     Next<span className='text-[#F83002]'>Career</span>
                 </h1>
+                </Link>
 
                 {/* Desktop Nav */}
                 <ul className='hidden md:flex font-medium text-md items-center gap-6'>

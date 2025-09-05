@@ -11,12 +11,12 @@ const LatestJobCards = ({job}) => {
             <div className='flex items-center gap-3'>
                 <Button className='p-0.5' variant="outline" size="icon">
                     <Avatar>
-                        <AvatarImage className='rounded-full' src={job?.company?.logo} />
+                        <AvatarImage className='rounded-full' src={job?.companyLogo} />
                     </Avatar>
                 </Button>
                 <div>
-                    <h1 className='font-medium text-md'>{job?.company?.name}</h1>
-                    <p className='text-sm text-gray-500'>{job?.company?.location ? job.company.location : "India"}</p>
+                    <h1 className='font-medium text-md'>{job?.companyName}</h1>
+                    <p className='text-sm text-gray-500'>{job?.location ? job.location : "India"}</p>
                 </div>
             </div>
             <div>

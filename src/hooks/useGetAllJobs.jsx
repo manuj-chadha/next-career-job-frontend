@@ -4,7 +4,7 @@ import { setAllJobs, setJobLoading } from '@/redux/jobSlice';
 import API from '@/utils/axios';
 import { JOB_API_END_POINT } from '@/utils/constant';
 
-const useGetAllJobs = () => {
+const useGetAllJobs = (page = 0, size = 10) => {
   const dispatch = useDispatch();
   const { searchedQuery, lastFetched, allJobs } = useSelector(store => store.job);
   const intervalRef = useRef(null);
@@ -14,15 +14,23 @@ const useGetAllJobs = () => {
     try {
       if (showLoader) dispatch(setJobLoading(true));
 
-      const res = await API.get(`${JOB_API_END_POINT}/get?keyword=${searchedQuery}`, {
-        withCredentials: true,
-      });
+      const res = await API.get(
+        `${JOB_API_END_POINT}/get?keyword=${searchedQuery}&page=${page}&size=${size}`,
+        { withCredentials: true }
+      );
 
       if (res.status === 200) {
-        dispatch(setAllJobs(res.data.jobs));
+        // Append instead of replacing
+        const newJobs = res.data.jobs;
+        const updatedJobs = page === 0 ? newJobs : [...allJobs, ...newJobs];
+
+        dispatch(setAllJobs(updatedJobs));
+
+        // Optionally store metadata
+        // dispatch(setJobMeta({ totalPages: res.data.totalPages, currentPage: res.data.currentPage }));
       }
     } catch (err) {
-      console.error("Error fetching allJobs:", err?.message);
+      console.error("Error fetching jobs:", err?.message);
     } finally {
       if (showLoader) dispatch(setJobLoading(false));
     }
@@ -32,17 +40,14 @@ const useGetAllJobs = () => {
     const now = Date.now();
     const isStale = !lastFetched || now - lastFetched > FETCH_INTERVAL;
 
-    if (!isStale && allJobs.length > 0) return;
-
-    fetchJobs(isStale || allJobs.length === 0);
+    fetchJobs(true);
 
     intervalRef.current = setInterval(() => {
       fetchJobs(false);
     }, FETCH_INTERVAL);
 
     return () => clearInterval(intervalRef.current);
-  }, [searchedQuery]);
+  }, [searchedQuery, page]); // depends on both keyword and page
 };
-
 
 export default useGetAllJobs;

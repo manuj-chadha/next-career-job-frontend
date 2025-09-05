@@ -8,6 +8,7 @@ import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from '@/utils/constant';
 import { setSingleJob } from '@/redux/jobSlice';
 import API from '@/utils/axios';
 import Navbar from './shared/Navbar';
+import JobDescriptionSkeleton from './skeletons/JobDescriptionSkeleton';
 
 const JobDescription = () => {
   const { singleJob } = useSelector(store => store.job);
@@ -61,11 +62,15 @@ const JobDescription = () => {
     fetchSingleJob();
   }, [jobId, dispatch, user?.id]);
 
+
   return (
     <>
     <div className="max-w-5xl mx-auto my-12 max-sm:my-6 px-6">
+      {!singleJob ? 
+      <JobDescriptionSkeleton /> : 
       <div className="bg-white p-6 md:p-10 rounded-xl shadow-xl space-y-6">
         {/* Header */}
+        
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <h1 className="text-lg max-md:text-2xl font-bold text-gray-900">{singleJob?.title}</h1>
@@ -117,6 +122,8 @@ const JobDescription = () => {
           </div>
         </div>
       </div>
+      }
+      
     </div>
     </>
   );

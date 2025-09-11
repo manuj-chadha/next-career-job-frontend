@@ -2,7 +2,8 @@
 
 > Frontend for the Next Career Job application
 
-A React + Vite based frontend project. It powers the UI for job listings / job application workflows for Next Career.
+Next Career is a modern, feature-rich job finding platform built with a React frontend and a Spring Boot backend. It provides a seamless experience for both job seekers and recruiters.
+
 
 ---
 
@@ -27,18 +28,16 @@ A React + Vite based frontend project. It powers the UI for job listings / job a
 ## Demo / Live Version
 
 Here is the live deployed version of the frontend:  
-[Next Career Job Frontend Live](https://next-career-ten.vercel.app) :contentReference[oaicite:0]{index=0}
+[Next Career Job Live](https://next-career-ten.vercel.app) :contentReference[oaicite:0]{index=0}
 
 ---
 
 ## Features
 
-_(You should update this section with actual features)_
-
 - Responsive UI for job browsing, filtering, and search  
-- Sign-in / authentication UI (if implemented)  
+- Sign-in / authentication UI
+- Infinite Scrolling for job listings
 - Common components & reusable UI elements  
-- Dark / light themes? _(if applicable)_  
 - Integration with backend APIs for job data, user profiles etc
 
 ---
@@ -69,8 +68,6 @@ These instructions will get you a copy of the project up and running on your loc
 - Access to the backend API (you might need the URL / credentials)  
 
 ### Installation
-
-```bash
 # clone the repo
 git clone https://github.com/manuj-chadha/next-career-job-frontend.git
 cd next-career-job-frontend

@@ -20,7 +20,8 @@ const jobSlice = createSlice({
             location: '',
             industry: '',
             salary: ''
-        }
+        },
+        totalJobs : 0,
     },
     reducers:{
         // actions
@@ -61,6 +62,9 @@ const jobSlice = createSlice({
         setSavedJobsLoading: (state, action) =>{
             state.savedJobsLoading=action.payload;
         },
+        setTotalJobs : (state, action) => {
+            state.totalJobs=action.payload;
+        },
         setFilters: (state, action) => {
             state.filters = action.payload;
         }
@@ -80,6 +84,7 @@ export const {
     setSavedJobsFetched,
     setSavedJobsLoading,
     setAllSavedJobs,
-    setFilters
+    setFilters,
+    setTotalJobs
 } = jobSlice.actions;
 export default jobSlice.reducer;

@@ -23,7 +23,7 @@ const GoogleLoginWithRole = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
 
-        <Button className='bg-gray-100 text-black rounded-md hover:bg-gray-200'><img src="https://img.clerk.com/static/google.svg?width=80" alt="Google" /><span>Google</span></Button>
+        <Button className='bg-white/60 text-black rounded-md hover:bg-white/50'><img src="https://img.clerk.com/static/google.svg?width=80" alt="Google" /><span>Google</span></Button>
       </DialogTrigger>
 
       <DialogContent className="max-w-xs rounded-2xl shadow-xl border border-gray-200">

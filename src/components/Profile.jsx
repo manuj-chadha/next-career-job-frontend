@@ -145,32 +145,70 @@ const Profile = () => {
         </div>
 
         <div className="my-5">
-          <h2 className="text-md font-bold pb-1">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {user?.profile?.skills?.length
-              ? user.profile.skills.map((item, index) => (
-                <Badge key={index} className="px-2 py-1">{item}</Badge>
-              ))
-              : <span>You haven't added any skills.</span>}
-          </div>
-        </div>
+  <h2 className="text-md font-bold pb-1">Skills</h2>
+  <div className="flex flex-wrap gap-2">
+    {user?.profile?.skills?.length
+      ? user.profile.skills.map((item, index) => (
+          <Badge key={index} className="px-2 py-1">{item}</Badge>
+        ))
+      : <span>You haven't added any skills.</span>}
+  </div>
+</div>
 
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label className="text-md font-bold">Resume</Label>
-          {user?.profile?.resume ? (
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={user?.profile?.resume}
-              className="text-white w-fit hover:underline cursor-pointer text-sm bg-black px-5 py-2 rounded-3xl break-all"
-            >
-              {user?.profile?.resumeOriginalName}
-            </a>
-          ) : (
-            <span>No resume uploaded.</span>
-          )}
+<div className="grid w-full max-w-sm items-center gap-1.5">
+  <Label className="text-md font-bold">Resume</Label>
+  {user?.profile?.resume ? (
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href={user?.profile?.resume}
+      className="text-white w-fit hover:underline cursor-pointer text-sm bg-black px-5 py-2 rounded-3xl break-all"
+    >
+      {user?.profile?.resumeOriginalName}
+    </a>
+  ) : (
+    <span>No resume uploaded.</span>
+  )}
+</div>
+
+{/* NEW EXPERIENCE SECTION */}
+{/* <div className="my-5">
+  <h2 className="text-md font-bold pb-1">Experience</h2>
+  {user?.profile?.experience?.length ? (
+    <div className="space-y-3">
+      {user.profile.experience.map((exp, index) => (
+        <div key={index} className="border rounded-lg p-3 shadow-md">
+          <p className="font-semibold">{exp.title}</p>
+          <p className="text-sm text-gray-700">{exp.company}</p>
+          <p className="text-xs text-gray-500">{exp.years}</p>
         </div>
+      ))}
+    </div>
+  ) : (
+    <span>No experience added yet.</span>
+  )}
+</div>
+
+<div className="my-5">
+  <h2 className="text-md font-bold pb-1">Education</h2>
+  {user?.profile?.education?.length ? (
+    <div className="space-y-3">
+      {user.profile.education.map((edu, index) => (
+        <div key={index} className="border rounded-lg p-3 shadow-md">
+          <p className="font-semibold">{edu.degree}</p>
+          <p className="text-sm text-gray-700">{edu.college}</p>
+          <p className="text-xs text-gray-500">{edu.year}</p>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <span>No education details added yet.</span>
+  )}
+</div> */}
+
+        
       </div>
+      
 
       <div className="max-w-4xl mx-auto bg-white rounded-2xl px-4">
         <h1 className="font-bold text-lg my-5">Applied Jobs</h1>

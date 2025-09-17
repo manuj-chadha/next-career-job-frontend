@@ -78,99 +78,106 @@ const Login = () => {
     }, []);
 
     return (
-        <div>
-            <div className='flex items-center justify-center px-4'>
-                <form onSubmit={submitHandler} className="w-full max-w-md border border-gray-200 rounded-md p-6 my-10 shadow-md">
-                    <h1 className='font-bold text-xl mb-6 text-center'>Login</h1>
+        <div className="h-screen flex items-center justify-center 
+  bg-gradient-to-br from-indigo-400 via-purple-300 to-pink-300 px-4">
 
-                    <div className='mb-4'>
-                        <Label className='pb-2'>Email</Label>
-                        <Input
-                            type="email"
-                            value={input.email}
-                            name="email"
-                            onChange={changeEventHandler}
-                            className='text-sm'
-                            placeholder="Enter your email"
-                            required
-                        />
-                    </div>
+  <form 
+    onSubmit={submitHandler} 
+    className="w-full max-w-md bg-white/80 backdrop-blur-xl 
+    border border-white/30 rounded-2xl shadow-2xl p-8"
+  >
+    <h1 className="font-extrabold text-2xl mb-6 text-center text-black drop-shadow">
+      Welcome Back 👋
+    </h1>
 
-                    <div className='mb-4'>
-                        <Label className='pb-2'>Password</Label>
-                        <div className="relative">
-                            <Input
-                                type={showPassword ? "text" : "password"}
-                                value={input.password}
-                                name="password"
-                                onChange={changeEventHandler}
-                                className='text-sm pr-10'
-                                placeholder="Enter your password"
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={togglePasswordVisibility}
-                                className="absolute right-2 top-2 text-gray-600"
-                                aria-required
-                            >
-                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                            </button>
-                        </div>
-                    </div>
+    {/* Email */}
+    <div className="mb-4">
+      <Label>Email</Label>
+      <Input
+        type="email"
+        value={input.email}
+        name="email"
+        onChange={changeEventHandler}
+        placeholder="Enter your email"
+        required
+        className="mt-2 bg-white/60 border-1 placeholder:text-xs"
+      />
+    </div>
 
-                    <RadioGroup className="flex items-center justify-center gap-6 my-5 max-sm:my-1">
-                        <div className="flex items-center space-x-2">
-                            <Input
-                                type="radio"
-                                name="role"
-                                value="student"
-                                checked={input.role === 'student'}
-                                onChange={changeEventHandler}
-                                className="cursor-pointer"
-                            />
-                            <Label htmlFor="student">Student</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Input
-                                type="radio"
-                                name="role"
-                                value="recruiter"
-                                checked={input.role === 'recruiter'}
-                                onChange={changeEventHandler}
-                                className="cursor-pointer"
-                            />
-                            <Label htmlFor="recruiter">Recruiter</Label>
-                        </div>
-                    </RadioGroup>
+    {/* Password */}
+    <div className="mb-4">
+      <Label>Password</Label>
+      <div className="relative">
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={input.password}
+          name="password"
+          onChange={changeEventHandler}
+          placeholder="Enter your password"
+          required
+          className="mt-2 bg-white/60 border-1 placeholder:text-xs pr-10"
+        />
+        <button
+          type="button"
+          onClick={togglePasswordVisibility}
+          className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+        >
+          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
+    </div>
 
-                    {
-                        loading ? (
-                            <Button className="w-full my-4" disabled>
-                                <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait
-                            </Button>
-                        ) : (
-                            <Button type="submit" className="w-full my-4">Login</Button>
-                        )
-                    }
+    {/* Role selection */}
+    <div className="flex gap-3 my-5">
+      <Button
+        type="button"
+        variant={input.role === "student" ? "default" : "outline"}
+        className="flex-1"
+        onClick={() => setInput({ ...input, role: "student" })}
+      >
+        Student
+      </Button>
+      <Button
+        type="button"
+        variant={input.role === "recruiter" ? "default" : "outline"}
+        className="flex-1"
+        onClick={() => setInput({ ...input, role: "recruiter" })}
+      >
+        Recruiter
+      </Button>
+    </div>
 
-                    <span className='text-sm block text-center'>
-                        Don&apos;t have an account?{" "}
-                        <Link to="/signup" className='text-blue-600 underline'>Signup</Link>
-                    </span>
-                    <div className="w-full flex items-center text-sm text-gray-500 py-2.5">
-                      <div className="flex-1 border-t border-gray-300"></div>
-                      <span className="px-3">or</span>
-                      <div className="flex-1 border-t border-gray-300"></div>
-                    </div>
+    {/* Submit button */}
+    {loading ? (
+      <Button className="w-full my-4" disabled>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+      </Button>
+    ) : (
+      <Button type="submit" className="w-full my-4">Login</Button>
+    )}
 
-                    <div className='text-sm flex justify-center items-center py-1 gap-3'>
+    {/* Signup link */}
+    <p className="text-sm text-center text-gray-600">
+      Don’t have an account?{" "}
+      <Link to="/signup" className="text-blue-600 hover:underline">Signup</Link>
+    </p>
+
+    {/* Divider */}
+    <div className="flex items-center my-5">
+      <div className="flex-1 border-t border-gray-300"></div>
+      <span className="px-3 text-sm text-gray-500">or</span>
+      <div className="flex-1 border-t border-gray-300"></div>
+    </div>
+
+    {/* Google login */}
+    <div className='text-sm flex justify-center items-center gap-3'>
                         <span>Login with</span>
-                        <GoogleLoginWithRole />
+                        <GoogleLoginWithRole className="w-full" />
                     </div>
-                </form>
-            </div>
-        </div>
+    {/* <GoogleLoginWithRole className="w-full" /> */}
+  </form>
+</div>
+
     )
 }
 

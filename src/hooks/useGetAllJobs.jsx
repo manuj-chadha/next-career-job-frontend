@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAllJobs, setJobLoading } from '@/redux/jobSlice';
+import { setAllJobs, setJobLoading, setTotalJobs } from '@/redux/jobSlice';
 import API from '@/utils/axios';
 import { JOB_API_END_POINT } from '@/utils/constant';
 
@@ -9,7 +9,6 @@ const useGetAllJobs = (page = 0, size = 12) => {
   const { searchedQuery, lastFetched, allJobs } = useSelector(store => store.job);
   const intervalRef = useRef(null);
   const FETCH_INTERVAL = 10 * 60 * 1000;
-  const [totalEntries, setTotalEntries]=useState(0);
 
   const fetchJobs = async (showLoader) => {
     try {
@@ -24,8 +23,8 @@ const useGetAllJobs = (page = 0, size = 12) => {
         // Append instead of replacing
         const newJobs = res.data.jobs;
         const updatedJobs = page === 0 ? newJobs : [...allJobs, ...newJobs];
-        setTotalEntries(res.data.totalElements);
         dispatch(setAllJobs(updatedJobs));
+        dispatch(setTotalJobs(res.data.totalElements));
 
         // Optionally store metadata
         // dispatch(setJobMeta({ totalPages: res.data.totalPages, currentPage: res.data.currentPage }));
@@ -50,7 +49,6 @@ const useGetAllJobs = (page = 0, size = 12) => {
     return () => clearInterval(intervalRef.current);
   }, [searchedQuery, page]); // depends on both keyword and page
 
-  return { totalEntries };
 };
 
 export default useGetAllJobs;

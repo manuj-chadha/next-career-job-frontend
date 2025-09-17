@@ -15,7 +15,7 @@ const LatestJobCards = ({job}) => {
                     </Avatar>
                 </Button>
                 <div>
-                    <h1 className='font-medium text-md'>{job?.companyName}</h1>
+                    <h1 className='font-medium text-sm sm:text-md'>{job?.companyName}</h1>
                     <p className='text-sm text-gray-500'>{job?.location ? job.location : "India"}</p>
                 </div>
             </div>

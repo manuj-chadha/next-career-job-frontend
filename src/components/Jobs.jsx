@@ -1,128 +1,130 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import FilterCard from './FilterCard';
 import Job from './Job';
+import JobSkeleton from './skeletons/JobSkeleton';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { X, Filter } from 'lucide-react';
-import JobSkeleton from './skeletons/JobSkeleton';
+import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const Jobs = () => {
-  const { allJobs, filters, searchedQuery, jobLoading } = useSelector(store => store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs);
+  const { allJobs, filters, searchedQuery, jobLoading, totalEntries } = useSelector(store => store.job);
+
   const [showFilter, setShowFilter] = useState(false);
+  const [page, setPage] = useState(0);
 
-  const parseSalaryRange = (rangeStr) => {
-    switch (rangeStr) {
-      case "3-6 LPA":
-        return [3, 6];
-      case "6-12 LPA":
-        return [6, 12];
-      case "12-24 LPA":
-        return [12, 24];
-      default:
-        return [0, Infinity];
-    }
-  };
-  
+  // Fetch jobs using custom hook
+  useGetAllJobs(page);
 
-  useEffect(() => {
-    let result = allJobs;
-    // console.log(result);
-    
+  const observer = useRef();
+
+  // IntersectionObserver for infinite scrolling
+  const lastJobRef = useCallback((node) => {
+    if (jobLoading) return;
+
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setPage(prev => prev + 1);
+      }
+    }, { rootMargin: "200px" });
+
+    if (node) observer.current.observe(node);
+  }, [jobLoading]);
+
+  // Filter jobs after fetching
+  const filterJobs = allJobs.filter(job => {
+    let match = true;
 
     if (filters.location) {
-        // console.log(filters.location);
-        
-      result = result.filter(job =>
-        job.location.toLowerCase().includes(filters.location.toLowerCase())
-      );
+      match = match && job.location.toLowerCase().includes(filters.location.toLowerCase());
     }
-
     if (filters.industry) {
-      result = result.filter(job =>
-        job.title.toLowerCase().includes(filters.industry.toLowerCase())
-      );
+      match = match && job.title.toLowerCase().includes(filters.industry.toLowerCase());
     }
-
     if (filters.salary) {
-      const [min, max] = parseSalaryRange(filters.salary);
-      result = result.filter(job =>
-        job.salary >= min && job.salary <= max
-      );
+      const [min, max] = filters.salary === "3-6 LPA" ? [3, 6]
+                        : filters.salary === "6-12 LPA" ? [6, 12]
+                        : filters.salary === "12-24 LPA" ? [12, 24]
+                        : [0, Infinity];
+      match = match && job.salary >= min && job.salary <= max;
     }
-
     if (searchedQuery) {
-      result = result.filter(job =>
+      match = match && (
         job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
         job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
         job.location.toLowerCase().includes(searchedQuery.toLowerCase())
       );
     }
 
-    setFilterJobs(result);
-  }, [allJobs, filters, searchedQuery]);
+    return match;
+  });
 
   return (
-    <div>
-      <div className='max-w-8xl mx-auto mt-5 sm:px-6 md:px-8'>
-        {/* Mobile Filter Toggle Button */}
-        <div className="grid-background"></div>
-        <div className='lg:hidden mb-4'>
-          <button
-            onClick={() => setShowFilter(true)}
-            className='flex items-center gap-2 border px-4 py-2 rounded-md text-sm'>
-            <Filter size={18} />
-            Filters
-          </button>
+    <div className="max-w-8xl mx-auto mt-5 sm:px-6 md:px-8 relative">
+      {/* Mobile Filter Toggle */}
+      <div className="lg:hidden mb-4 ml-2">
+        <button
+          onClick={() => setShowFilter(true)}
+          className="flex items-center gap-2 border px-4 py-2 rounded-md text-sm"
+        >
+          <Filter size={18} /> Filters
+        </button>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-5 relative">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block lg:w-1/5">
+          <FilterCard />
         </div>
 
-        <div className='flex flex-col lg:flex-row gap-5 relative'>
-          {/* Desktop Sidebar */}
-          <div className='hidden lg:block lg:w-1/5'>
+        {/* Mobile Popover Filter */}
+        {showFilter && (
+          <div className="lg:hidden absolute top-0 left-0 w-full h-fit z-50 bg-white shadow-xl rounded-lg px-5 overflow-y-auto max-h-fit">
+            <div className="flex justify-end mb-4">
+              <button onClick={() => setShowFilter(false)} className="text-gray-500 hover:text-black">
+                <X />
+              </button>
+            </div>
             <FilterCard />
           </div>
+        )}
 
-          {/* Mobile Popover Filter Panel */}
-          {showFilter && (
-            <div className='lg:hidden absolute top-0 left-0 w-full h-fit z-50 bg-white shadow-xl rounded-lg px-5 overflow-y-auto max-h-fit'>
-              <div className='flex justify-end mb-4'>
-                <button onClick={() => setShowFilter(false)} className='text-gray-500 hover:text-black'>
-                  <X />
-                </button>
-              </div>
-              <FilterCard />
+        {/* Job Listings */}
+        <div className="flex-1 h-[88vh] overflow-y-auto px-3 pb-5">
+          {jobLoading && page === 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, idx) => <JobSkeleton key={idx} />)}
+            </div>
+          ) : filterJobs.length === 0 ? (
+            <span className="text-center text-gray-500">Sorry, no jobs found.</span>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filterJobs.map((job, index) => {
+                const isLastJob = index === filterJobs.length - 1;
+                return (
+                  <motion.div
+                    key={job?.id}
+                    ref={isLastJob ? lastJobRef : null}
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Job job={job} />
+                  </motion.div>
+                );
+              })}
             </div>
           )}
 
-          {/* Job Listings */}
-          <div className='flex-1 h-[88vh] overflow-y-auto px-2 pb-5'>
-            {
-              jobLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {Array.from({ length: 6 }).map((_, idx) => (
-                    <JobSkeleton key={idx} />
-                  ))}
-                </div>
-              ) : filterJobs.length <= 0 ? (
-                <span className='text-center text-gray-500'>Sorry, no jobs found.</span>
-              ) : (
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-                  {
-                    filterJobs.map((job) => (
-                      <motion.div
-                        initial={{ opacity: 0, x: 100 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -100 }}
-                        transition={{ duration: 0.3 }}
-                        key={job?.id}>
-                        <Job job={job} />
-                      </motion.div>
-                    ))
-                  }
-                </div>
-              )
-            }
-          </div>
+          {/* Skeleton for next pages */}
+          {jobLoading && page > 0 && (
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 3 }).map((_, idx) => <JobSkeleton key={idx} />)}
+            </div>
+          )}
         </div>
       </div>
     </div>

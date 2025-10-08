@@ -12,7 +12,7 @@ const GoogleCallback = () => {
 
   const fetchResponse = async (code, role) => {
     try {
-      const res = await API.get(`https://next-career-job-backend.onrender.com/api/auth/google/callback`, {
+      const res = await API.get(`/auth/google/callback`, {
         params: { code, role },
         withCredentials: true
       });

@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/latin.css";
+@import "@fontsource/inter/700.css"; 
+
 
 
 @custom-variant dark (&:is(.dark *));

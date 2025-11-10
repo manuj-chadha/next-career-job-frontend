@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { SendHorizonal, MessageSquareText } from 'lucide-react';
-import { Button } from './ui/button';
-import botAvatar from '../assets/bot.png';
+import { Button } from '../components/ui/button';
+import botAvatar from '../assets/bot.webp';
 import userAvatar from '../assets/image.png';
 import { useSelector } from 'react-redux';
 import store from '@/redux/store';

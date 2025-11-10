@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import FilterCard from './FilterCard';
-import Job from './Job';
-import JobSkeleton from './skeletons/JobSkeleton';
+import FilterCard from '../components/FilterCard';
+import Job from '../components/Job';
+import JobSkeleton from '../components/skeletons/JobSkeleton';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { X, Filter } from 'lucide-react';

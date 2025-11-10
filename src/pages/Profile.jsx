@@ -1,23 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Navbar from './shared/Navbar';
-import { Avatar, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Contact, Edit2, Mail, Pen } from 'lucide-react';
-import { Badge } from './ui/badge';
-import { Label } from './ui/label';
-import AppliedJobTable from './AppliedJobTable';
-import UpdateProfileDialog from './UpdateProfileDialog';
+import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+// import AppliedJobTable from './AppliedJobTable';
+// import UpdateProfileDialog from './UpdateProfileDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
-import Footer from './shared/Footer';
 import { toast } from 'sonner';
 import API from '@/utils/axios';
 import { USER_API_END_POINT } from '@/utils/constant';
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { setUser } from '@/redux/authSlice';
 import defaultPic from "../assets/image.png";
-import SavedPosts from './SavedPosts';
+// import SavedPosts from './SavedPosts';
 import useGetSavedPosts from '@/hooks/useGetSavedPosts';
+import { Button } from '@/components/ui/button';
+import UpdateProfileDialog from '@/components/UpdateProfileDialog';
+import AppliedJobTable from '@/components/AppliedJobTable';
+import SavedPosts from '@/components/SavedPosts';
 
 
 const Profile = () => {

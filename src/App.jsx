@@ -2,12 +2,12 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Route, RouterProvider } from 'react-router-dom'
 import UserRoute from './components/UserRoute';
 import ProtectedRoute from './components/admin/ProtectedRoute';
-const Home = lazy(() => import('./components/Home'));
+const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./components/auth/Login'));
 const Signup = lazy(() => import('./components/auth/Signup'));
-const Jobs = lazy(() => import('./components/Jobs'));
+const Jobs = lazy(() => import('./pages/Jobs'));
 const Browse = lazy(() => import('./components/Browse'));
-const Profile = lazy(() => import('./components/Profile'));
+const Profile = lazy(() => import('./pages/Profile'));
 const JobDescription = lazy(() => import('./components/JobDescription'));
 const Companies = lazy(() => import('./components/admin/Companies'));
 const CompanyCreate = lazy(() => import('./components/admin/CompanyCreate'));
@@ -16,7 +16,7 @@ const AdminJobs = lazy(() => import('./components/admin/AdminJobs'));
 const PostJob = lazy(() => import('./components/admin/PostJob'));
 const Applicants = lazy(() => import('./components/admin/Applicants'));
 const UpdateJob = lazy(() => import('./components/admin/UpdateJob'));
-const CareerAdviceChat = lazy(() => import('./components/CareerAdviceChat'));
+const CareerAdviceChat = lazy(() => import('./pages/CareerAdviceChat'));
 const GoogleCallback = lazy(() => import('./components/auth/GoogleCallback'));
 
 

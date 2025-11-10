@@ -13,7 +13,6 @@ import Faqs from './Faqs'
 
 
 const Home = () => {
-  useGetAllJobs();
   const { user } = useSelector(store => store.auth);
   return (
     

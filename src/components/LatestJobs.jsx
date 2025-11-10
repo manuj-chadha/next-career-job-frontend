@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import LatestJobCardsSkeleton from './skeletons/LatestJobCardsSkeleton';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
+import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const LatestJobs = () => {
   useGetAllJobs();

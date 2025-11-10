@@ -14,7 +14,7 @@ const GoogleCallback = () => {
     try {
       const res = await API.get(`/auth/google/callback`, {
         params: { code, role },
-        withCredentials: true
+        withCredentials: true,
       });
       if (res.status === 200) {
         localStorage.setItem("token", res.data.token);
@@ -22,7 +22,7 @@ const GoogleCallback = () => {
         navigate("/");
       }
     } catch (e) {
-      console.log(e?.message);
+      console.error(e?.message);
       navigate("/login");
     }
   };
@@ -43,33 +43,35 @@ const GoogleCallback = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-400 via-purple-300 to-pink-300 px-4">
-      <div className="flex flex-col items-center gap-6 w-full max-w-sm text-center">
-        {/* Spinner with logo */}
-        <div className="relative w-24 h-24">
-          <div className="absolute inset-0 border-4 border-white border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-400 via-purple-300 to-pink-300 px-4 py-10 sm:px-6 md:px-8">
+      <div className="w-full max-w-sm sm:max-w-md bg-white/80 backdrop-blur-xl border border-white/30 rounded-2xl shadow-2xl p-6 sm:p-8 text-center flex flex-col items-center gap-6 sm:gap-8 transition-all duration-300">
+        
+        {/* Spinner */}
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+          <div className="absolute inset-0 border-4 border-gray-200 border-t-indigo-500 rounded-full animate-spin-slow" />
           <div className="absolute inset-0 flex items-center justify-center">
             <img
               src="/logo.png"
-              alt="Google Login"
-              className="h-12 w-12 animate-pulse"
+              alt="Next Career Logo"
+              className="h-8 w-8 sm:h-10 sm:w-10 animate-pulse-slow"
             />
           </div>
         </div>
 
         {/* Heading */}
-        <h2 className="text-xl sm:text-2xl font-bold tracking-wide text-white">
+        <h2 className="text-lg sm:text-2xl font-bold tracking-wide text-gray-900 leading-snug">
           Authenticating with Google...
         </h2>
 
         {/* Description */}
-        <p className="text-sm text-white/80 max-w-xs mx-auto">
-          We’re logging you in securely. This might take a moment. Please don’t refresh the page.
+        <p className="text-xs sm:text-sm text-gray-700 max-w-xs sm:max-w-sm mx-auto leading-relaxed px-2">
+          We’re logging you in securely. This might take a few seconds.
+          Please don’t refresh or close this tab.
         </p>
 
         {/* Progress Bar */}
-        <div className="w-full h-2 bg-white/30 rounded-full overflow-hidden mt-2">
-          <div className="h-full w-1/3 bg-white animate-loading-bar rounded-full" />
+        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mt-2 sm:mt-3">
+          <div className="h-full w-1/3 bg-indigo-500 animate-progress-smooth rounded-full" />
         </div>
       </div>
     </div>

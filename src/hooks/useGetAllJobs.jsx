@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllJobs, setJobLoading, setTotalJobs } from '@/redux/jobSlice';
 import API from '@/utils/axios';
@@ -10,44 +10,58 @@ const useGetAllJobs = (page = 0, size = 12) => {
   const intervalRef = useRef(null);
   const FETCH_INTERVAL = 10 * 60 * 1000;
 
-  const fetchJobs = async (showLoader) => {
+  const fetchJobsInternal = useCallback(async (showLoader = false) => {
     try {
-      if (showLoader) dispatch(setJobLoading(true));
+      // Only show loader if there are no jobs cached and showLoader requested
+      if (showLoader && (!allJobs || allJobs.length === 0)) {
+        dispatch(setJobLoading(true));
+      }
 
       const res = await API.get(
-        `${JOB_API_END_POINT}/get?keyword=${searchedQuery}&page=${page}&size=${size}`,
+        `${JOB_API_END_POINT}/get?keyword=${encodeURIComponent(searchedQuery || '')}&page=${page}&size=${size}`,
         { withCredentials: true }
       );
 
       if (res.status === 200) {
-        // Append instead of replacing
-        const newJobs = res.data.jobs;
-        const updatedJobs = page === 0 ? newJobs : [...allJobs, ...newJobs];
+        const newJobs = res.data.jobs || [];
+        const updatedJobs = page === 0 ? newJobs : [...(allJobs || []), ...newJobs];
         dispatch(setAllJobs(updatedJobs));
-        dispatch(setTotalJobs(res.data.totalElements));
-
-        // Optionally store metadata
-        // dispatch(setJobMeta({ totalPages: res.data.totalPages, currentPage: res.data.currentPage }));
+        dispatch(setTotalJobs(res.data.totalElements || 0));
       }
     } catch (err) {
       console.error("Error fetching jobs:", err?.message);
     } finally {
-      if (showLoader) dispatch(setJobLoading(false));
+      if ((!allJobs || allJobs.length === 0) && showLoader) {
+        // hide loader only if we displayed it
+        dispatch(setJobLoading(false));
+      }
     }
-  };
+  }, [dispatch, searchedQuery, page, size, allJobs]);
 
   useEffect(() => {
-    const now = Date.now();
-    const isStale = !lastFetched || now - lastFetched > FETCH_INTERVAL;
+    // Let the browser paint first: schedule fetch during idle or small timeout
+    const scheduleInitial = () => {
+      // if jobs already exist -> fetch in background without loader
+      const showLoader = !(allJobs && allJobs.length > 0);
 
-    fetchJobs(true);
+      if ('requestIdleCallback' in window) {
+        // requestIdleCallback with timeout ensures it runs eventually
+        requestIdleCallback(() => fetchJobsInternal(showLoader), { timeout: 1000 });
+      } else {
+        // small delay to allow paint and CSS/Fonts to load
+        setTimeout(() => fetchJobsInternal(showLoader), 200);
+      }
+    };
 
+    scheduleInitial();
+
+    // set up polling (fire-and-forget, no loader)
     intervalRef.current = setInterval(() => {
-      fetchJobs(false);
+      fetchJobsInternal(false);
     }, FETCH_INTERVAL);
 
     return () => clearInterval(intervalRef.current);
-  }, [searchedQuery, page]); // depends on both keyword and page
+  }, [fetchJobsInternal, searchedQuery, page]);
 
 };
 

@@ -6,16 +6,13 @@ import { JOB_API_END_POINT } from '@/utils/constant';
 
 const useGetAllJobs = (page = 0, size = 12) => {
   const dispatch = useDispatch();
-  const { searchedQuery, lastFetched, allJobs } = useSelector(store => store.job);
+  const { searchedQuery, allJobs } = useSelector(store => store.job);
   const intervalRef = useRef(null);
-  const FETCH_INTERVAL = 10 * 60 * 1000;
+  const FETCH_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
-  const fetchJobsInternal = useCallback(async (showLoader = false) => {
+  const fetchJobs = useCallback(async (showLoader = false) => {
     try {
-      // Only show loader if there are no jobs cached and showLoader requested
-      if (showLoader && (!allJobs || allJobs.length === 0)) {
-        dispatch(setJobLoading(true));
-      }
+      if (showLoader) dispatch(setJobLoading(true));
 
       const res = await API.get(
         `${JOB_API_END_POINT}/get?keyword=${encodeURIComponent(searchedQuery || '')}&page=${page}&size=${size}`,
@@ -24,45 +21,35 @@ const useGetAllJobs = (page = 0, size = 12) => {
 
       if (res.status === 200) {
         const newJobs = res.data.jobs || [];
-        const updatedJobs = page === 0 ? newJobs : [...(allJobs || []), ...newJobs];
-        dispatch(setAllJobs(updatedJobs));
+        dispatch(setAllJobs(page === 0 ? newJobs : [...allJobs, ...newJobs]));
         dispatch(setTotalJobs(res.data.totalElements || 0));
       }
     } catch (err) {
-      console.error("Error fetching jobs:", err?.message);
+      console.error('Error fetching jobs:', err?.message);
     } finally {
-      if ((!allJobs || allJobs.length === 0) && showLoader) {
-        // hide loader only if we displayed it
-        dispatch(setJobLoading(false));
-      }
+      if (showLoader) dispatch(setJobLoading(false));
     }
-  }, [dispatch, searchedQuery, page, size, allJobs]);
+  }, [dispatch, searchedQuery, page, size]);
 
   useEffect(() => {
-    // Let the browser paint first: schedule fetch during idle or small timeout
-    const scheduleInitial = () => {
-      // if jobs already exist -> fetch in background without loader
-      const showLoader = !(allJobs && allJobs.length > 0);
+    // clean any previous intervals before scheduling
+    if (intervalRef.current) clearInterval(intervalRef.current);
 
-      if ('requestIdleCallback' in window) {
-        // requestIdleCallback with timeout ensures it runs eventually
-        requestIdleCallback(() => fetchJobsInternal(showLoader), { timeout: 1000 });
-      } else {
-        // small delay to allow paint and CSS/Fonts to load
-        setTimeout(() => fetchJobsInternal(showLoader), 200);
-      }
-    };
+    // defer initial fetch to let paint happen first
+    const showLoader = !(allJobs && allJobs.length > 0);
+    const delayedFetch = () => fetchJobs(showLoader);
 
-    scheduleInitial();
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(delayedFetch, { timeout: 1000 });
+    } else {
+      setTimeout(delayedFetch, 300);
+    }
 
-    // set up polling (fire-and-forget, no loader)
-    intervalRef.current = setInterval(() => {
-      fetchJobsInternal(false);
-    }, FETCH_INTERVAL);
+    // background refresh every 10 min, no loader
+    intervalRef.current = setInterval(() => fetchJobs(false), FETCH_INTERVAL);
 
     return () => clearInterval(intervalRef.current);
-  }, [fetchJobsInternal, searchedQuery, page]);
-
+  }, [fetchJobs, searchedQuery, page]);
 };
 
 export default useGetAllJobs;

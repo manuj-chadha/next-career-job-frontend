@@ -100,7 +100,7 @@ const Login = () => {
         onChange={changeEventHandler}
         placeholder="Enter your email"
         required
-        className="mt-2 bg-white/60 border-1 placeholder:text-xs"
+        className="mt-2 bg-white/60 border-1 max-sm:text-xs placeholder:text-xs"
       />
     </div>
 
@@ -115,7 +115,7 @@ const Login = () => {
           onChange={changeEventHandler}
           placeholder="Enter your password"
           required
-          className="mt-2 bg-white/60 border-1 placeholder:text-xs pr-10"
+          className="mt-2 bg-white/60 border-1 max-sm:text-xs placeholder:text-xs pr-10"
         />
         <button
           type="button"
@@ -153,7 +153,7 @@ const Login = () => {
         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
       </Button>
     ) : (
-      <Button type="submit" className="w-full my-4">Login</Button>
+      <Button type="submit" className="w-full my-4 cursor-pointer">Login</Button>
     )}
 
     {/* Signup link */}

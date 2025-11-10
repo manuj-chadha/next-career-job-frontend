@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import LatestJobCards from './LatestJobCards';
 import { useSelector } from 'react-redux';
 import LatestJobCardsSkeleton from './skeletons/LatestJobCardsSkeleton';
@@ -7,10 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const LatestJobs = () => {
-  useGetAllJobs(); // now deferred
   const { allJobs, jobLoading } = useSelector(store => store.job);
-
-  // Render immediately; even when jobLoading true, skeleton is local and lightweight
+  useGetAllJobs();
   return (
     <div className="w-full max-w-7xl mx-auto px-4 md:px-8 my-20">
       <h1 className="text-3xl md:text-3xl font-bold text-center md:text-left mb-6">

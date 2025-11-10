@@ -85,7 +85,7 @@ const Signup = () => {
               onChange={changeEventHandler}
               placeholder="Enter your name"
               required
-              className="mt-2 bg-white/60 text-sm placeholder:text-xs"
+              className="mt-2 bg-white/60 text-xs sm:text-sm placeholder:text-xs"
             />
           </div>
           <div>
@@ -97,7 +97,7 @@ const Signup = () => {
               onChange={changeEventHandler}
               placeholder="xyz@gmail.com"
               required
-              className="mt-2 bg-white/60 text-sm placeholder:text-xs"
+              className="mt-2 bg-white/60 text-xs sm:text-sm placeholder:text-xs"
             />
           </div>
         </div>
@@ -113,7 +113,7 @@ const Signup = () => {
               onChange={changeEventHandler}
               placeholder="Enter your phone number"
               required
-              className="mt-2 bg-white/60 text-xs placeholder:text-xs"
+              className="mt-2 bg-white/60 text-xs sm:text-sm placeholder:text-xs"
             />
           </div>
           <div>
@@ -125,7 +125,7 @@ const Signup = () => {
               onChange={changeEventHandler}
               placeholder="Enter a strong password"
               required
-              className="mt-2 bg-white/60 text-xs placeholder:text-xs"
+              className="mt-2 bg-white/60 text-xs sm:text-sm placeholder:text-xs"
             />
           </div>
         </div>
@@ -139,7 +139,7 @@ const Signup = () => {
       accept="image/*"
       type="file"
       onChange={changeFileHandler}
-      className="mt-2 cursor-pointer bg-white/60 text-sm placeholder:text-xs"
+      className="mt-2 cursor-pointer bg-white/60 text-xs placeholder:text-xs"
     />
   </div>
 

@@ -6,7 +6,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./components/auth/Login'));
 const Signup = lazy(() => import('./components/auth/Signup'));
 const Jobs = lazy(() => import('./pages/Jobs'));
-const Browse = lazy(() => import('./components/Browse'));
+const Browse = lazy(() => import('./pages/Browse'));
 const Profile = lazy(() => import('./pages/Profile'));
 const JobDescription = lazy(() => import('./components/JobDescription'));
 const Companies = lazy(() => import('./components/admin/Companies'));

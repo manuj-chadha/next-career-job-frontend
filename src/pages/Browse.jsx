@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import Navbar from './shared/Navbar';
-import Job from './Job';
+import Navbar from '../components/shared/Navbar';
+import Job from '../components/Job';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
-import JobSkeleton from './skeletons/JobSkeleton';
-import Footer from './shared/Footer';
+import JobSkeleton from '../components/skeletons/JobSkeleton';
+import Footer from '../components/shared/Footer';
 
 const Browse = () => {
     const dispatch = useDispatch();
-    const { allJobs, jobLoading, searchedQuery, totalEntries } = useSelector(store => store.job);
+    const { allJobs, jobLoading, searchedQuery, totalJobs } = useSelector(store => store.job);
 
     const [page, setPage] = useState(0);
 
@@ -53,7 +53,7 @@ const Browse = () => {
             <div className="grid-background"></div>
             <div className='max-w-7xl mx-auto py-2 pb-10 px-4 sm:px-6 md:px-8'>
                 <h1 className='font-bold text-lg sm:text-xl my-5'>
-                    Search Results ({totalEntries})
+                    Search Results ({totalJobs})
                 </h1>
                 
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>

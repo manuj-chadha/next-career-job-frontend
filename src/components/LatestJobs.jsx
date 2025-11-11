@@ -8,6 +8,7 @@ import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const LatestJobs = () => {
   const { allJobs, jobLoading } = useSelector(store => store.job);
+  const navigate=useNavigate();
   useGetAllJobs();
   return (
     <div className="w-full max-w-7xl mx-auto px-4 md:px-8 my-20">

@@ -8,55 +8,64 @@ import { X, Filter } from 'lucide-react';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const Jobs = () => {
-  const { allJobs, filters, searchedQuery, jobLoading, totalEntries } = useSelector(store => store.job);
-
+  const { allJobs, filters, searchedQuery, jobLoading } = useSelector(store => store.job);
   const [showFilter, setShowFilter] = useState(false);
   const [page, setPage] = useState(0);
 
-  // Fetch jobs using custom hook
+  // Keep hook call unchanged
   useGetAllJobs(page);
 
   const observer = useRef();
+  const scrollContainerRef = useRef(null);
 
   // IntersectionObserver for infinite scrolling
-  const lastJobRef = useCallback((node) => {
-    if (jobLoading) return;
+  const lastJobRef = useCallback(
+    (node) => {
+      if (jobLoading) return;
+      if (observer.current) observer.current.disconnect();
 
-    if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && !jobLoading) {
+            setPage((prev) => prev + 1);
+          }
+        },
+        {
+          root: scrollContainerRef.current, // 👈 important — observe inner scroll container
+          rootMargin: '200px',
+        }
+      );
 
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        setPage(prev => prev + 1);
-      }
-    }, { rootMargin: "200px" });
+      if (node) observer.current.observe(node);
+    },
+    [jobLoading]
+  );
 
-    if (node) observer.current.observe(node);
-  }, [jobLoading]);
-
-  // Filter jobs after fetching
-  const filterJobs = allJobs.filter(job => {
+  // Filtering logic
+  const filterJobs = allJobs.filter((job) => {
     let match = true;
 
-    if (filters.location) {
+    if (filters.location)
       match = match && job.location.toLowerCase().includes(filters.location.toLowerCase());
-    }
-    if (filters.industry) {
+    if (filters.industry)
       match = match && job.title.toLowerCase().includes(filters.industry.toLowerCase());
-    }
     if (filters.salary) {
-      const [min, max] = filters.salary === "3-6 LPA" ? [3, 6]
-                        : filters.salary === "6-12 LPA" ? [6, 12]
-                        : filters.salary === "12-24 LPA" ? [12, 24]
-                        : [0, Infinity];
+      const [min, max] =
+        filters.salary === '3-6 LPA'
+          ? [3, 6]
+          : filters.salary === '6-12 LPA'
+          ? [6, 12]
+          : filters.salary === '12-24 LPA'
+          ? [12, 24]
+          : [0, Infinity];
       match = match && job.salary >= min && job.salary <= max;
     }
-    if (searchedQuery) {
-      match = match && (
-        job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-        job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-        job.location.toLowerCase().includes(searchedQuery.toLowerCase())
-      );
-    }
+    if (searchedQuery)
+      match =
+        match &&
+        (job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          job.location.toLowerCase().includes(searchedQuery.toLowerCase()));
 
     return match;
   });
@@ -74,14 +83,14 @@ const Jobs = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-5 relative">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:block lg:w-1/5">
+        {/* Fixed Sidebar for Desktop */}
+        <div className="hidden lg:block lg:w-1/5 sticky top-5 self-start h-fit">
           <FilterCard />
         </div>
 
-        {/* Mobile Popover Filter */}
+        {/* Mobile Filter Overlay */}
         {showFilter && (
-          <div className="lg:hidden absolute top-0 left-0 w-full h-fit z-50 bg-white shadow-xl rounded-lg px-5 overflow-y-auto max-h-fit">
+          <div className="lg:hidden absolute top-0 left-0 w-full h-fit z-50 bg-white shadow-xl rounded-lg px-5 max-h-fit">
             <div className="flex justify-end mb-4">
               <button onClick={() => setShowFilter(false)} className="text-gray-500 hover:text-black">
                 <X />
@@ -91,29 +100,36 @@ const Jobs = () => {
           </div>
         )}
 
-        {/* Job Listings */}
-        <div className="flex-1 h-[88vh] overflow-y-auto px-3 pb-5">
+        {/* Scrollable Job Listing */}
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 h-[88vh] overflow-y-auto px-3 pb-5"
+        >
           {jobLoading && page === 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, idx) => <JobSkeleton key={idx} />)}
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <JobSkeleton key={idx} />
+              ))}
             </div>
           ) : filterJobs.length === 0 ? (
-            <span className="text-center text-gray-500">Sorry, no jobs found.</span>
+            <span className="text-center text-gray-500 block mt-10">
+              Sorry, no jobs found.
+            </span>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filterJobs.map((job, index) => {
                 const isLastJob = index === filterJobs.length - 1;
                 return (
-                  <motion.div
-                    key={job?.id}
-                    ref={isLastJob ? lastJobRef : null}
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -100 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Job job={job} />
-                  </motion.div>
+                  <div ref={isLastJob ? lastJobRef : null} key={job._id || job.id}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 40 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Job job={job} />
+                    </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -122,7 +138,9 @@ const Jobs = () => {
           {/* Skeleton for next pages */}
           {jobLoading && page > 0 && (
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 3 }).map((_, idx) => <JobSkeleton key={idx} />)}
+              {Array.from({ length: 3 }).map((_, idx) => (
+                <JobSkeleton key={idx} />
+              ))}
             </div>
           )}
         </div>

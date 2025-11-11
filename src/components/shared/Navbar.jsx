@@ -17,7 +17,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+    const [isPopoverOpen, setIsPopoverOpen]=useState(false);
     const logoutHandler = async () => {
         try {
             const res = await API.post(`${USER_API_END_POINT}/logout`, {}, { withCredentials: true });
@@ -69,7 +69,7 @@ const Navbar = () => {
                             <Link to="/signup"><Button className="bg-[#6A38C2] hover:bg-[#5b30a6] transition hover:scale-105">Signup</Button></Link>
                         </>
                     ) : (
-                        <Popover>
+                        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                             <PopoverTrigger asChild>
                                 <Avatar className='cursor-pointer border-2 max-w-18'>
                                     <AvatarImage src={user?.profile?.profilePhoto || defaultPic} />
@@ -91,7 +91,9 @@ const Navbar = () => {
                                             <div className='flex items-center gap-2'>
                                                 <User2 size={18} />
                                                 <Link to="/profile">
-                                                    <Button variant="link" className='text-sm'>View Profile</Button>
+                                                    <Button variant="link"
+                                                    
+                                                    onClick={() => setIsPopoverOpen(false)} className='text-sm focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0 border-none outline-none shadow-none'>View Profile</Button>
                                                 </Link>
                                             </div>
                                         )}

@@ -4,21 +4,27 @@ import Job from '../components/Job';
 import JobSkeleton from '../components/skeletons/JobSkeleton';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { X, Filter } from 'lucide-react';
+import { X, Filter, Search } from 'lucide-react';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import { Button } from '@/components/ui/button';
+import { setSearchedQuery } from '@/redux/jobSlice';
 
 const Jobs = () => {
   const { allJobs, filters, searchedQuery, jobLoading } = useSelector(store => store.job);
   const [showFilter, setShowFilter] = useState(false);
   const [page, setPage] = useState(0);
+  const [query, setQuery]=useState("");
 
-  // Keep hook call unchanged
   useGetAllJobs(page);
+
+  const searchJobHandler = () => {
+          if (!query.trim()) return;
+          dispatch(setSearchedQuery(query));
+      };
 
   const observer = useRef();
   const scrollContainerRef = useRef(null);
 
-  // IntersectionObserver for infinite scrolling
   const lastJobRef = useCallback(
     (node) => {
       if (jobLoading) return;
@@ -31,7 +37,7 @@ const Jobs = () => {
           }
         },
         {
-          root: scrollContainerRef.current, // 👈 important — observe inner scroll container
+          root: scrollContainerRef.current,
           rootMargin: '200px',
         }
       );
@@ -54,10 +60,10 @@ const Jobs = () => {
         filters.salary === '3-6 LPA'
           ? [3, 6]
           : filters.salary === '6-12 LPA'
-          ? [6, 12]
-          : filters.salary === '12-24 LPA'
-          ? [12, 24]
-          : [0, Infinity];
+            ? [6, 12]
+            : filters.salary === '12-24 LPA'
+              ? [12, 24]
+              : [0, Infinity];
       match = match && job.salary >= min && job.salary <= max;
     }
     if (searchedQuery)
@@ -105,6 +111,23 @@ const Jobs = () => {
           ref={scrollContainerRef}
           className="flex-1 h-[88vh] overflow-y-auto px-3 pb-5"
         >
+          <div className='flex w-[40%] shadow-lg border border-gray-200 pl-3 mb-4 text-sm rounded-full items-center gap-4 mx-auto overflow-hidden max-sm:w-[80%]'>
+            <input
+              type="text"
+              placeholder='Find your dream jobs'
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && searchJobHandler()}
+              className='outline-none border-none w-full py-2 bg-transparent text-gray-700'
+            />
+            <Button
+              onClick={()=> searchJobHandler()}
+              className="rounded-r-full bg-[#6A38C2] hover:bg-[#5b30a6]"
+              aria-label="Search"
+            >
+              <Search className='h-5 w-5' />
+            </Button>
+          </div>
           {jobLoading && page === 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, idx) => (

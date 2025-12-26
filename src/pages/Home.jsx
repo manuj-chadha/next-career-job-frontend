@@ -15,22 +15,22 @@ import Faqs from '../components/Faqs'
 const Home = () => {
   const { user } = useSelector(store => store.auth);
   return (
-    
+
     <div>
       <div className='relative'>
-      <div className="grid-background"> </div>
-      {
-        user?.role?.toLowerCase() === 'recruiter' ? <Recruiter />
-         : <>
-         <HeroSection />
-      <CategoryCarousel />
-      <LatestJobs />
-      <FloatingChatBot />
-         </>
-      }
+        <div className="grid-background"> </div>
+        {
+          user?.role?.toLowerCase() === 'recruiter' ? <Recruiter />
+            : <>
+              <HeroSection />
+              <CategoryCarousel />
+              <LatestJobs />
+              <FloatingChatBot />
+            </>
+        }
       </div>
       <Faqs />
-      </div>
+    </div>
   )
 }
 

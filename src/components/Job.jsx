@@ -46,7 +46,7 @@ const Job = forwardRef(({ job }, ref) => {
             <div className='flex items-center gap-2 my-2'>
                 <Button className="p-4" variant="outline" size="icon">
                     <Avatar>
-                        <AvatarImage src={job?.companyLogo} loading="lazy" alt="company" />
+                        <AvatarImage src={`https://img.logo.dev/${job?.companyWebsite.substring(8)}?token=${import.meta.env.VITE_LOGO_DEV_TOKEN}`} loading="lazy" alt="company" />
                     </Avatar>
                 </Button>
                 <div>

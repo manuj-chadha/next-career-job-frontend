@@ -10,12 +10,10 @@
 body {
   font-family: 'Inter', sans-serif;
 }
-/* Hide horizontal scrollbar but allow vertical scrolling */
 html, body {
   overflow-x: hidden;
 }
 
-/* Optional: hide all scrollbars visually but still scrollable */
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;

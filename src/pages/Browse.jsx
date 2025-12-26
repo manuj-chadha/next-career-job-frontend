@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import Navbar from '../components/shared/Navbar';
 import Job from '../components/Job';
 import JobSkeleton from '../components/skeletons/JobSkeleton';
-import Footer from '../components/shared/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
@@ -77,7 +75,6 @@ const Browse = () => {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

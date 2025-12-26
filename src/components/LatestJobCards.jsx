@@ -11,7 +11,7 @@ const LatestJobCards = ({job}) => {
             <div className='flex items-center gap-3'>
                 <Button className='p-0.5' variant="outline" size="icon">
                     <Avatar>
-                        <AvatarImage className='rounded-full' src={job?.companyLogo} />
+                        <AvatarImage className='rounded-full' src={`https://img.logo.dev/${job?.companyWebsite.substring(8)}?token=${import.meta.env.VITE_LOGO_DEV_TOKEN}`} />
                     </Avatar>
                 </Button>
                 <div>

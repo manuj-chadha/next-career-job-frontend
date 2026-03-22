@@ -3,15 +3,16 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const ProtectedRoute = ({children}) => {
-    const {user} = useSelector(store=>store.auth);
+    const { user, _persist } = useSelector(store => store.auth);
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(user === null || user.role.toLowerCase() !== 'recruiter'){
+    useEffect(() => {
+        if (!_persist?.rehydrated) return;
+        if (user === null || user.role?.toLowerCase() !== 'recruiter') {
             navigate("/");
         }
-    },[]);
+    }, [user, _persist?.rehydrated, navigate]);
 
     return (
         <>

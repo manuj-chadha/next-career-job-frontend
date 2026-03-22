@@ -75,7 +75,7 @@ const Login = () => {
         if (user) {
             navigate("/");
         }
-    }, []);
+    }, [user, navigate]);
 
     return (
         <div className="h-screen flex items-center justify-center 

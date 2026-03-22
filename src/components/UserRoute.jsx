@@ -6,15 +6,16 @@ import Navbar from "./shared/Navbar";
 import Footer from "./shared/Footer";
 
 const UserRoute = ({children}) => {
-    const {user} = useSelector(store=>store.auth);
+    const { user, _persist } = useSelector(store => store.auth);
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        if(user === null){
+    useEffect(() => {
+        if (!_persist?.rehydrated) return;
+        if (user === null) {
             navigate("/login");
         }
-    },[]);
+    }, [user, _persist?.rehydrated, navigate]);
 
     return (
         <>

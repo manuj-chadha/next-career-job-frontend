@@ -62,7 +62,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (user) navigate('/');
-  }, []);
+  }, [user, navigate]);
 
   return (
     <div className="h-screen flex items-center justify-center bg-gradient-to-br from-indigo-400 via-purple-300 to-pink-300 px-4">

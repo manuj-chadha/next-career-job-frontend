@@ -5,6 +5,7 @@ import LatestJobCardsSkeleton from './skeletons/LatestJobCardsSkeleton';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import { useQuery } from '@tanstack/react-query';
 
 const LatestJobs = () => {
   const { allJobs, jobLoading } = useSelector(store => store.job);

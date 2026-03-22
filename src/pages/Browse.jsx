@@ -37,7 +37,7 @@ const Browse = () => {
   // Reset page when search query changes
   useEffect(() => {
     setPage(0);
-  }, [searchedQuery]);
+  }, [searchedQuery]);git 
 
   // Reset query on unmount
   useEffect(() => {

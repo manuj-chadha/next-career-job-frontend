@@ -4,6 +4,7 @@ import UserRoute from './components/UserRoute';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import HomeSkeleton from './components/skeletons/HomeSkeleton';
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./components/auth/Login'));
 const Signup = lazy(() => import('./components/auth/Signup'));
@@ -102,9 +103,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
       <Suspense fallback={
-        <div className="w-full h-screen flex items-center justify-center">
-          <div className="text-lg font-semibold text-gray-600">Loading...</div>
-        </div>
+        <HomeSkeleton />
       }>
         <RouterProvider router={appRouter} />
       </Suspense>

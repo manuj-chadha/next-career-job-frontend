@@ -10,7 +10,7 @@ const ProtectedRoute = ({children}) => {
     useEffect(() => {
         if (!_persist?.rehydrated) return;
         if (user === null || user.role?.toLowerCase() !== 'recruiter') {
-            navigate("/");
+            navigate("/", { replace: true });
         }
     }, [user, _persist?.rehydrated, navigate]);
 

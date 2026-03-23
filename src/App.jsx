@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, Route, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import UserRoute from './components/UserRoute';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import HomeSkeleton from './components/skeletons/HomeSkeleton';
-const Home = lazy(() => import('./pages/Home'));
+import Home from './pages/Home';
 const Login = lazy(() => import('./components/auth/Login'));
 const Signup = lazy(() => import('./components/auth/Signup'));
 const Jobs = lazy(() => import('./pages/Jobs'));
@@ -22,8 +22,7 @@ const UpdateJob = lazy(() => import('./components/admin/UpdateJob'));
 const CareerAdviceChat = lazy(() => import('./pages/CareerAdviceChat'));
 const GoogleCallback = lazy(() => import('./components/auth/GoogleCallback'));
 
-
-
+const queryClient = new QueryClient();
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -98,10 +97,9 @@ const appRouter = createBrowserRouter([
 
 ])
 function App() {
-  const queryClient=new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
+      {import.meta.env.DEV ? <ReactQueryDevtools /> : null}
       <Suspense fallback={
         <HomeSkeleton />
       }>

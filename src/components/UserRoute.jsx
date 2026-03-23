@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import FloatingChatBot from "./FloatingChatBot";
 import Navbar from "./shared/Navbar";
 import Footer from "./shared/Footer";
 
@@ -13,7 +12,7 @@ const UserRoute = ({children}) => {
     useEffect(() => {
         if (!_persist?.rehydrated) return;
         if (user === null) {
-            navigate("/login");
+            navigate("/login", { replace: true });
         }
     }, [user, _persist?.rehydrated, navigate]);
 

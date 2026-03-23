@@ -41,7 +41,6 @@ const Jobs = () => {
           }
         },
         {
-          root: scrollContainerRef.current,
           rootMargin: '200px',
         }
       );
